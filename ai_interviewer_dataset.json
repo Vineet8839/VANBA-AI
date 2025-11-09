@@ -1,0 +1,84 @@
+{
+    "roles": {
+        "Software Engineer": {
+            "greeting": [
+                "Hi {name}, welcome. Please, take a seat. How are you today?",
+                "Hello {name}, good to meet you. I see you've applied for the Software Engineer role. How has your day been?"
+            ],
+            "appearance_check": [
+                "I see you're dressed professionally. That\u2019s always a good start.",
+                "Nice to see you came prepared. Your attire sets a confident tone."
+            ],
+            "warmup": [
+                "I\u2019ve reviewed your resume briefly. I\u2019m curious \u2014 what part of your experience do you think stands out the most?",
+                "Before we begin, is this your first interview with an AI-based recruiter?"
+            ],
+            "transition": [
+                "Alright, let's begin with some technical and problem-solving questions.",
+                "Let's start \u2014 I\u2019ll ask you some role-related questions and then a few situational ones."
+            ],
+            "questions": [
+                "Can you explain the difference between compiled and interpreted languages?",
+                "Describe a challenging bug you encountered and how you fixed it.",
+                "How do you ensure your code is secure?",
+                "What is the difference between multithreading and multiprocessing?",
+                "Explain the concept of Big O notation with an example.",
+                "What\u2019s the difference between REST and GraphQL APIs?",
+                "Describe your approach to writing unit tests.",
+                "How do you handle version control conflicts in Git?",
+                "What\u2019s your process for optimizing database queries?",
+                "Explain SOLID principles in object-oriented programming.",
+                "What\u2019s the difference between synchronous and asynchronous programming?",
+                "How do you manage memory in languages like C++?",
+                "Describe a project where you implemented a design pattern.",
+                "What\u2019s the difference between TCP and UDP?",
+                "How do you approach learning a new technology?",
+                "Describe your experience with CI/CD pipelines.",
+                "What\u2019s the difference between SQL and NoSQL databases?",
+                "How do you handle deadlines when working on multiple projects?",
+                "What\u2019s your experience with containerization tools like Docker?",
+                "How do you debug production issues?"
+            ]
+        },
+        "Data Scientist": {
+            "greeting": [
+                "Hi {name}, welcome. Please, take a seat. How are you today?",
+                "Hello {name}, good to meet you. I see you've applied for the Data Scientist role. How has your day been?"
+            ],
+            "appearance_check": [
+                "Your attire looks sharp, just like your resume.",
+                "Dressed well \u2014 first impressions count, and you've got it right."
+            ],
+            "warmup": [
+                "I\u2019ve reviewed your resume briefly. I\u2019m curious \u2014 what part of your experience do you think stands out the most?",
+                "Before we begin, is this your first interview with an AI-based recruiter?"
+            ],
+            "transition": [
+                "Alright, let's begin with some data science-related questions.",
+                "Let's start \u2014 I\u2019ll ask you some role-related questions and then a few situational ones."
+            ],
+            "questions": [
+                "Explain the difference between supervised and unsupervised learning.",
+                "What is overfitting, and how do you prevent it?",
+                "Describe a machine learning project you\u2019ve worked on.",
+                "What are precision and recall?",
+                "Explain the difference between classification and regression.",
+                "How do you handle missing data in a dataset?",
+                "What is feature scaling, and why is it important?",
+                "Describe your experience with Python libraries for data science.",
+                "Explain the concept of cross-validation.",
+                "What is the bias-variance trade-off?",
+                "Describe a time you optimized a model for better performance.",
+                "What\u2019s the difference between bagging and boosting?",
+                "How do you handle imbalanced datasets?",
+                "Explain the purpose of dimensionality reduction.",
+                "What\u2019s the difference between SQL and NoSQL for data storage?",
+                "How do you ensure data privacy in your projects?",
+                "Describe your experience with deep learning frameworks.",
+                "What\u2019s the importance of feature engineering?",
+                "How do you visualize complex data?",
+                "What\u2019s your experience with deploying machine learning models?"
+            ]
+        }
+    }
+}

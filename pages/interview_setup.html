@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script src="interview_setup_tour.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <title>Interview Setup - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+    .setup-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .setup-card:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Add these fixes to the existing style section */
+    
+    /* Ensure all difficulty cards are visible */
+    .difficulty-card {
+        opacity: 1 !important;
+        visibility: visible !important;
+        min-height: 400px; /* Ensure consistent height */
+    }
+    
+    .difficulty-card.locked {
+        opacity: 0.85 !important; /* Make locked card more visible */
+        cursor: pointer !important;
+    }
+    
+    .difficulty-card.locked::after {
+        display: none; /* Remove overlay on locked card */
+    }
+    
+    /* Fix upload area styling */
+    .upload-area {
+        border: 2px dashed rgba(255, 255, 255, 0.4) !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    /* Ensure all sections are visible */
+    .setup-card {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Fix text contrast issues */
+    .section-title {
+        color: #FFFFFF !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .section-description {
+        color: #E2E8F0 !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .card-content {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .feature-list {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+    
+    .feature-item {
+        color: #F1F5F9;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .price-tag {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        display: inline-block;
+        margin: 0.5rem 0;
+    }
+
+    /* Fix: Make job role dropdown options text black for visibility */
+    #job-role,
+    #job-role option,
+    #job-role optgroup {
+        color: #111 !important;
+        background: #fff !important;
+    }
+
+    /* Optional: Keep dropdown background white on open */
+    #job-role:focus {
+        background: #fff !important;
+        color: #111 !important;
+    }
+</style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faiintervi7306back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+    <!-- Include Chatbot CSS and JS -->
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <script src="../public/chatbot.js" defer></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-accent-700">
+    <!-- Dress Code Modal -->
+    <div id="dress-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" style="display: flex;">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative flex flex-col items-center">
+            <h2 class="text-xl font-bold text-primary-800 mb-4 text-center">Dress Code Check</h2>
+            <p class="text-base text-primary-700 mb-2 text-center">Formal dress is required to start the interview.<br>Please allow webcam access and ensure you are dressed professionally.</p>
+            <video id="webcam-preview" autoplay playsinline width="320" height="240" class="rounded-lg border mb-4 bg-black"></video>
+            <button id="check-dress-btn" class="bg-accent-500 hover:bg-accent-600 text-white px-6 py-2 rounded-lg font-semibold mb-2 transition-all duration-200">Check Dress</button>
+            <div id="dress-confirm-section" class="hidden flex-col items-center w-full">
+                <img id="dress-snapshot" class="rounded-lg border mb-2 mx-auto" style="max-width: 200px; display: block;" />
+                <p class="text-primary-700 text-sm mb-2 text-center">Are you wearing formal dress?</p>
+                <div class="flex justify-center gap-4">
+                    <button id="confirm-formal-btn" class="bg-green-600 hover:bg-green-700 text-black px-4 py-2 rounded-lg font-semibold">Yes, I am</button>
+                    <button id="deny-formal-btn" class="bg-red-500 hover:bg-red-600 text-black px-4 py-2 rounded-lg font-semibold">No</button>
+                </div>
+                <p id="dress-error-msg" class="text-red-500 text-sm mt-2 hidden text-center">Formal dress is required to proceed.</p>
+            </div>
+        </div>
+    </div>
+    <!-- Floating Background Particles -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="floating-particles" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-particles" style="top: 20%; right: 15%; animation-delay: 2s;"></div>
+        <div class="floating-particles" style="bottom: 30%; left: 20%; animation-delay: 4s;"></div>
+        <div class="floating-particles" style="bottom: 15%; right: 25%; animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="relative z-50 glass border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="50" cy="50" r="35" fill="currentColor" opacity="0.1"/>
+                        <path d="M30 40 L50 25 L70 40 L50 55 Z" fill="currentColor"/>
+                        <circle cx="50" cy="65" r="8" fill="currentColor"/>
+                        <path d="M35 75 Q50 85 65 75" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span class="text-white font-bold text-lg">AI Interview Simulator</span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="home_dashboard.html" class="text-blue-100 hover:text-white transition-colors duration-200">Dashboard</a>
+                    <a href="interview_setup.html" class="text-white font-medium">Setup</a>
+                    <a href="premium_purchase.html" class="text-blue-100 hover:text-white transition-colors duration-200">Premium</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden glass border-t border-white/20 hidden">
+            <div class="px-4 py-3 space-y-2">
+                <a href="home_dashboard.html" class="block text-blue-100 hover:text-white py-2 transition-colors duration-200">Dashboard</a>
+                <a href="interview_setup.html" class="block text-white font-medium py-2">Setup</a>
+                <a href="premium_purchase.html" class="block text-blue-100 hover:text-white py-2 transition-colors duration-200">Premium</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb Navigation -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+            <div class="glass rounded-xl px-4 py-2 inline-flex items-center space-x-2 text-sm">
+                <a href="home_dashboard.html" class="text-blue-100 hover:text-white transition-colors duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                </a>
+                <svg class="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span class="text-white font-medium">Interview Setup</span>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Configure Your Interview
+            </h1>
+            <p class="text-lg text-blue-100 max-w-2xl mx-auto">
+                Set up your personalized AI interview experience. Choose your role, difficulty level, and preferences to get started.
+            </p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="mb-8">
+            <div class="flex items-center justify-center space-x-4 mb-4">
+                <div class="progress-step completed w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                <div class="w-12 h-0.5 bg-accent-500"></div>
+                <div class="progress-step active w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium bg-secondary-600">2</div>
+                <div class="w-12 h-0.5 bg-secondary-400"></div>
+                <div class="progress-step w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium bg-secondary-600 text-white">3</div>
+            </div>
+            <div class="text-center text-blue-100 text-sm">
+                Step 2 of 3: Configure Interview Settings
+            </div>
+        </div>
+
+        <!-- Setup Form -->
+        <form id="interview-setup-form" class="space-y-8">
+            <!-- Job Role Selection -->
+            <div class="setup-card rounded-2xl p-6 md:p-8" style="display: block !important;">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-400 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold section-title mb-2">Select Job Role <span class="text-red-300">*</span></h3>
+                        <p class="section-description text-base">Choose your target position for personalized interview questions</p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <input type="text" id="job-search" placeholder="Search job roles..." class="w-full p-4 bg-secondary-700/50 border border-secondary-600 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:border-primary-500 transition-colors">
+                    <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                        <svg class="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <select id="job-role" required class="w-full mt-4 p-4 bg-secondary-700/50 border border-secondary-600 rounded-xl focus:outline-none focus:border-primary-500 transition-colors">
+                    <option value="" class="text-secondary-900">Select a job role</option>
+                    <!-- Technology & IT -->
+                    <optgroup label="Technology & IT">
+                        <option>Software Developer / Engineer</option>
+                        <option>Web Developer (Frontend / Backend / Full Stack)</option>
+                        <option>Data Scientist / Data Analyst</option>
+                        <option>AI/ML Engineer</option>
+                        <option>Cybersecurity Analyst</option>
+                        <option>Network Administrator</option>
+                        <option>Cloud Engineer (AWS, Azure, GCP)</option>
+                        <option>DevOps Engineer</option>
+                        <option>IT Support Specialist</option>
+                        <option>Database Administrator (DBA)</option>
+                        <option>UI/UX Designer</option>
+                        <option>Systems Analyst</option>
+                        <option>Product Manager</option>
+                        <option>Game Developer</option>
+                        <option>Blockchain Developer</option>
+                        <option>IT Project Manager</option>
+                        <option>QA Tester / Automation Engineer</option>
+                    </optgroup>
+                    <!-- Healthcare & Medicine -->
+                    <optgroup label="Healthcare & Medicine">
+                        <option>Doctor / Physician (General, Surgeon, Specialist)</option>
+                        <option>Nurse (Registered Nurse, Nurse Practitioner)</option>
+                        <option>Pharmacist</option>
+                        <option>Medical Lab Technician</option>
+                        <option>Radiologist</option>
+                        <option>Dentist / Orthodontist</option>
+                        <option>Physiotherapist</option>
+                        <option>Psychiatrist / Psychologist</option>
+                        <option>Healthcare Administrator</option>
+                        <option>Paramedic / EMT</option>
+                        <option>Occupational Therapist</option>
+                        <option>Veterinary Doctor</option>
+                        <option>Medical Coder / Biller</option>
+                    </optgroup>
+                    <!-- Engineering -->
+                    <optgroup label="Engineering">
+                        <option>Mechanical Engineer</option>
+                        <option>Electrical Engineer</option>
+                        <option>Civil Engineer</option>
+                        <option>Chemical Engineer</option>
+                        <option>Electronics & Communication Engineer</option>
+                        <option>Aerospace Engineer</option>
+                        <option>Environmental Engineer</option>
+                        <option>Industrial Engineer</option>
+                        <option>Robotics Engineer</option>
+                        <option>Marine Engineer</option>
+                        <option>Automotive Engineer</option>
+                        <option>Biomedical Engineer</option>
+                    </optgroup>
+                    <!-- Finance & Banking -->
+                    <optgroup label="Finance & Banking">
+                        <option>Financial Analyst</option>
+                        <option>Investment Banker</option>
+                        <option>Accountant / CPA</option>
+                        <option>Auditor</option>
+                        <option>Risk Analyst</option>
+                        <option>Tax Consultant</option>
+                        <option>Stock Broker</option>
+                        <option>Financial Planner / Advisor</option>
+                        <option>Credit Analyst</option>
+                        <option>Actuary</option>
+                        <option>Loan Officer</option>
+                        <option>Treasury Analyst</option>
+                        <option>Compliance Officer</option>
+                    </optgroup>
+                    <!-- Business & Management -->
+                    <optgroup label="Business & Management">
+                        <option>Business Analyst</option>
+                        <option>Operations Manager</option>
+                        <option>Project Manager</option>
+                        <option>Human Resources (HR) Manager</option>
+                        <option>Recruitment Specialist</option>
+                        <option>Marketing Manager</option>
+                        <option>Sales Executive / Manager</option>
+                        <option>Product Manager</option>
+                        <option>Supply Chain Manager</option>
+                        <option>Business Development Executive</option>
+                        <option>Procurement Manager</option>
+                        <option>Management Consultant</option>
+                    </optgroup>
+                    <!-- Education & Research -->
+                    <optgroup label="Education & Research">
+                        <option>School Teacher</option>
+                        <option>College Professor / Lecturer</option>
+                        <option>Research Scientist</option>
+                        <option>Educational Counselor</option>
+                        <option>Librarian</option>
+                        <option>Instructional Designer</option>
+                        <option>Principal / School Administrator</option>
+                        <option>Special Education Teacher</option>
+                        <option>Online Tutor / Course Creator</option>
+                    </optgroup>
+                    <!-- Law & Legal Services -->
+                    <optgroup label="Law & Legal Services">
+                        <option>Lawyer / Advocate</option>
+                        <option>Legal Advisor</option>
+                        <option>Judge</option>
+                        <option>Paralegal</option>
+                        <option>Legal Analyst</option>
+                        <option>Corporate Lawyer</option>
+                        <option>Public Prosecutor</option>
+                        <option>Legal Clerk</option>
+                        <option>Contract Manager</option>
+                    </optgroup>
+                    <!-- Media & Entertainment -->
+                    <optgroup label="Media & Entertainment">
+                        <option>Journalist / Reporter</option>
+                        <option>News Anchor</option>
+                        <option>Content Writer / Copywriter</option>
+                        <option>Graphic Designer</option>
+                        <option>Video Editor</option>
+                        <option>Film Director / Producer</option>
+                        <option>Photographer / Videographer</option>
+                        <option>Animator / VFX Artist</option>
+                        <option>Social Media Manager</option>
+                        <option>Public Relations (PR) Specialist</option>
+                        <option>Actor / Model</option>
+                        <option>Radio Jockey (RJ)</option>
+                        <option>Musician / Singer / Composer</option>
+                    </optgroup>
+                    <!-- Hospitality & Tourism -->
+                    <optgroup label="Hospitality & Tourism">
+                        <option>Hotel Manager</option>
+                        <option>Chef / Cook</option>
+                        <option>Travel Agent / Consultant</option>
+                        <option>Tour Guide</option>
+                        <option>Event Planner</option>
+                        <option>Flight Attendant</option>
+                        <option>Bartender</option>
+                        <option>Concierge</option>
+                        <option>Cruise Ship Staff</option>
+                        <option>Resort Manager</option>
+                    </optgroup>
+                    <!-- Construction & Real Estate -->
+                    <optgroup label="Construction & Real Estate">
+                        <option>Architect</option>
+                        <option>Civil Contractor</option>
+                        <option>Structural Engineer</option>
+                        <option>Site Supervisor</option>
+                        <option>Real Estate Agent / Broker</option>
+                        <option>Quantity Surveyor</option>
+                        <option>Urban Planner</option>
+                        <option>Interior Designer</option>
+                        <option>Property Manager</option>
+                    </optgroup>
+                    <!-- Manufacturing & Production -->
+                    <optgroup label="Manufacturing & Production">
+                        <option>Factory Worker / Machine Operator</option>
+                        <option>Production Manager</option>
+                        <option>Quality Control Inspector</option>
+                        <option>Industrial Designer</option>
+                        <option>Maintenance Engineer</option>
+                        <option>Supply Chain Coordinator</option>
+                        <option>Warehouse Manager</option>
+                    </optgroup>
+                    <!-- Transportation & Logistics -->
+                    <optgroup label="Transportation & Logistics">
+                        <option>Truck Driver / Delivery Driver</option>
+                        <option>Logistics Coordinator</option>
+                        <option>Supply Chain Analyst</option>
+                        <option>Airline Pilot</option>
+                        <option>Air Traffic Controller</option>
+                        <option>Shipping & Receiving Clerk</option>
+                        <option>Freight Forwarder</option>
+                        <option>Inventory Manager</option>
+                    </optgroup>
+                    <!-- Government & Public Services -->
+                    <optgroup label="Government & Public Services">
+                        <option>IAS / IPS Officer (India)</option>
+                        <option>Police Officer</option>
+                        <option>Firefighter</option>
+                        <option>Army / Navy / Airforce Personnel</option>
+                        <option>Customs Officer</option>
+                        <option>Public Health Officer</option>
+                        <option>Clerk / Administrative Officer</option>
+                        <option>Diplomat / Foreign Service Officer</option>
+                    </optgroup>
+                    <!-- Energy & Utilities -->
+                    <optgroup label="Energy & Utilities">
+                        <option>Electrical Lineman</option>
+                        <option>Power Plant Operator</option>
+                        <option>Renewable Energy Technician</option>
+                        <option>Petroleum Engineer</option>
+                        <option>Environmental Scientist</option>
+                        <option>Mining Engineer</option>
+                        <option>Waste Management Specialist</option>
+                    </optgroup>
+                    <!-- Agriculture & Environment -->
+                    <optgroup label="Agriculture & Environment">
+                        <option>Farmer / Agronomist</option>
+                        <option>Agricultural Engineer</option>
+                        <option>Horticulturist</option>
+                        <option>Veterinary Technician</option>
+                        <option>Wildlife Biologist</option>
+                        <option>Environmental Consultant</option>
+                        <option>Fisheries Technician</option>
+                    </optgroup>
+                    <!-- Sales & Customer Service -->
+                    <optgroup label="Sales & Customer Service">
+                        <option>Retail Sales Associate</option>
+                        <option>Customer Support Executive</option>
+                        <option>Telecaller / Telesales Agent</option>
+                        <option>Account Manager</option>
+                        <option>Sales Consultant</option>
+                        <option>Inside Sales Representative</option>
+                        <option>Field Sales Officer</option>
+                    </optgroup>
+                    <!-- Miscellaneous & Emerging Roles -->
+                    <optgroup label="Miscellaneous & Emerging Roles">
+                        <option>Entrepreneur / Startup Founder</option>
+                        <option>Freelance Artist / Designer / Developer</option>
+                        <option>Data Privacy Officer</option>
+                        <option>E-commerce Manager</option>
+                        <option>Digital Marketing Specialist</option>
+                        <option>Influencer / Content Creator</option>
+                        <option>AI Prompt Engineer</option>
+                        <option>Drone Operator</option>
+                        <option>Ethical Hacker / Pen Tester</option>
+                        <option>Crypto Trader / NFT Specialist</option>
+                    </optgroup>
+                </select>
+
+                <!-- Upload Resume Section moved here -->
+                <div class="setup-card rounded-xl p-3 md:p-4 mt-4" style="display: block !important;">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-lg flex items-center justify-center mr-2 shadow-lg">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold section-title mb-1">Upload Resume <span class="text-red-300">*</span></h3>
+                            <p class="section-description text-xs">Resume is required for personalized questions</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <!-- Upload Area -->
+                        <div class="upload-area rounded-xl p-4 text-center transition-all duration-300 border-2 border-red-300" id="upload-area">
+                            <input type="file" id="resume-upload" accept=".pdf,.doc,.docx" class="hidden" required />
+                            <svg class="w-8 h-8 text-white mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-white font-bold text-sm mb-1">Drop your resume <span class="text-red-300">*</span></p>
+                            <p class="section-description text-xs mb-2">or click to browse files</p>
+                            <button type="button" onclick="document.getElementById('resume-upload').click()" class="bg-gradient-to-r from-primary-500 to-primary-400 hover:from-primary-600 hover:to-primary-500 text-white px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                Choose File
+                            </button>
+                            <p class="section-description text-xs mt-2">PDF, DOC, DOCX up to 5MB</p>
+                            <p id="upload-error" class="text-red-300 text-xs mt-2 hidden font-medium bg-red-900/30 py-1 px-2 rounded-lg border border-red-400/30">Please upload your resume to continue</p>
+                            <!-- Upload status indicator -->
+                            <div id="upload-status" class="mt-2 text-green-300 font-semibold text-xs hidden">
+                                <svg class="inline w-4 h-4 mr-1 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Resume uploaded!
+                            </div>
+                        </div>
+
+                        <!-- File Preview -->
+                        <div id="file-preview" class="hidden setup-card rounded-xl p-4">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-green-400 rounded-lg flex items-center justify-center shadow-lg">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p id="file-name" class="text-white font-semibold text-xs"></p>
+                                    <p id="file-size" class="section-description text-xs"></p>
+                                </div>
+                                <button type="button" id="remove-file" class="text-red-300 hover:text-red-200 transition-colors duration-200 p-1 rounded-lg hover:bg-red-900/20">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="text-center bg-green-900/30 p-2 rounded-xl border border-green-400/30">
+                                <p class="text-green-300 text-xs font-semibold mb-1">✓ Resume uploaded successfully</p>
+                                <p class="section-description text-xs">Questions will be tailored to your experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Difficulty Level Selection -->
+            <div class="setup-card rounded-2xl p-6 md:p-8" style="display: block !important;">
+                <div class="flex items-center mb-8">
+                    <div class="w-12 h-12 bg-gradient-to-r from-accent-500 to-accent-400 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold section-title mb-2">Choose Difficulty Level <span class="text-red-300">*</span></h3>
+                        <p class="section-description text-base">Select the complexity of your interview questions to match your experience level</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Basic Level -->
+                    <div class="difficulty-card rounded-2xl p-6 border-2 border-white/20 hover:border-blue-400 transition-all duration-300 cursor-pointer shadow-lg bg-secondary-800/50 hover:bg-secondary-700/70" data-level="basic" style="opacity: 1 !important;">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Basic Level</h4>
+                            <p class="text-blue-200 text-sm mb-4">Practice with essential interview questions and get basic results.</p>
+                            <div class="space-y-2 text-left">
+                                <div class="flex items-center text-blue-200 text-sm">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    1)Basic questions only
+                                    2)Performance Breakdown
+                                </div>
+                                <div class="flex items-center text-blue-200 text-sm">
+                                    <svg class="w-4 h-4 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    other feature will be locked
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Premium Level -->
+                    <div class="difficulty-card rounded-2xl p-6 border-2 border-yellow-400 hover:border-yellow-500 transition-all duration-300 cursor-pointer shadow-lg bg-yellow-900/40 hover:bg-yellow-800/60 relative" data-level="premium" style="opacity: 1 !important;">
+                        <!-- Lock icon overlay for non-premium users -->
+                        <span id="premium-lock" class="absolute top-3 right-3 z-10 bg-yellow-700/80 rounded-full p-1" style="display:none;">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17a2 2 0 002-2v-2a2 2 0 00-4 0v2a2 2 0 002 2zm6-6V9a6 6 0 10-12 0v2a2 2 0 00-2 2v6a2 2 0 002 2h12a2 2 0 002-2v-6a2 2 0 00-2-2z" />
+                            </svg>
+                        </span>
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">Premium Level</h4>
+                            <p class="text-yellow-100 text-sm mb-4">Unlock all advanced features, analytics, and recommendations.</p>
+                            <div class="space-y-2 text-left">
+                                <div class="flex items-center text-yellow-100 text-sm">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    1)Overall Performance Score
+                                    2)Performance Breakdown
+                                    3)AI-Generated Recommendations
+                                </div>
+                                <div class="flex items-center text-yellow-100 text-sm">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    4)Question-by-Question Analysis
+                                    5)Video Playback
+                                    6)Emotion Analysis
+                                    7)PDF Reports
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                    
+                                </div>
+                                <div class="flex items-center text-blue-200 text-sm">
+                                    <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                
+                                </div>
+                            </div>
+                            <div class="mt-6">
+                               
+
+            <!-- Resume Upload Section moved above -->
+</div>
+
+
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button type="button" onclick="window.location.href='home_dashboard.html'" class="px-8 py-3 bg-secondary-600 hover:bg-secondary-700 text-white font-medium rounded-xl transition-all duration-200 hover:scale-105">
+                    Back to Dashboard
+                </button>
+                <button type="submit" id="start-interview-btn" disabled class="px-8 py-3 bg-accent-500 hover:bg-accent-600 disabled:bg-secondary-600 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-all duration-200 hover:scale-105 disabled:hover:scale-100">
+                    Start Interview
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Chatbot HTML -->
+    <div id="chatbot-container">
+        <button id="chatbot-toggle">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+            </svg>
+        </button>
+        <div id="chatbot-window">
+            <div class="header">
+                <h3>Chat with Us!</h3>
+                <button id="chatbot-close">&times;</button>
+            </div>
+            <div class="messages" id="chatbot-messages">
+                <div>Hi! How can I assist you today?</div>
+            </div>
+            <div class="input">
+                <input id="chatbot-input" type="text" placeholder="Type your message...">
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Webcam Dress Code Modal Logic
+    let formalDressPassed = false;
+    const dressModal = document.getElementById('dress-modal');
+    const webcamPreview = document.getElementById('webcam-preview');
+    const checkDressBtn = document.getElementById('check-dress-btn');
+    const dressConfirmSection = document.getElementById('dress-confirm-section');
+    const dressSnapshot = document.getElementById('dress-snapshot');
+    const confirmFormalBtn = document.getElementById('confirm-formal-btn');
+    const denyFormalBtn = document.getElementById('deny-formal-btn');
+    const dressErrorMsg = document.getElementById('dress-error-msg');
+    // Start webcam
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                webcamPreview.srcObject = stream;
+            })
+            .catch(function(err) {
+                webcamPreview.poster = '';
+                checkDressBtn.disabled = true;
+                checkDressBtn.textContent = 'Webcam access required';
+            });
+    } else {
+        checkDressBtn.disabled = true;
+        checkDressBtn.textContent = 'Webcam not supported';
+    }
+    checkDressBtn.addEventListener('click', function() {
+        // Take snapshot
+        const canvas = document.createElement('canvas');
+        canvas.width = webcamPreview.videoWidth || 320;
+        canvas.height = webcamPreview.videoHeight || 240;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(webcamPreview, 0, 0, canvas.width, canvas.height);
+        dressSnapshot.src = canvas.toDataURL('image/png');
+        dressConfirmSection.classList.remove('hidden');
+    });
+    confirmFormalBtn.addEventListener('click', function() {
+        formalDressPassed = true;
+        dressModal.style.display = 'none';
+        // Enable Start Interview if other requirements are met
+        validateForm();
+    });
+    denyFormalBtn.addEventListener('click', function() {
+        dressErrorMsg.classList.remove('hidden');
+        setTimeout(() => dressErrorMsg.classList.add('hidden'), 2000);
+    });
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    });
+
+    // Job role search functionality
+    const jobSearch = document.getElementById('job-search');
+    const jobSelect = document.getElementById('job-role');
+    
+    jobSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const options = jobSelect.querySelectorAll('option');
+        
+        options.forEach(option => {
+            if (option.value === '') return;
+            const text = option.textContent.toLowerCase();
+            option.style.display = text.includes(searchTerm) ? 'block' : 'none';
+        });
+    });
+
+    // Difficulty level selection
+    const difficultyCards = document.querySelectorAll('.difficulty-card');
+    let selectedDifficulty = null;
+    let resumeUploaded = false;
+
+    // Show lock icon on premium card if not premium
+    function updatePremiumLock() {
+        const premiumLock = document.getElementById('premium-lock');
+        if (!isPremiumActive()) {
+            premiumLock.style.display = 'block';
+        } else {
+            premiumLock.style.display = 'none';
+        }
+    }
+    updatePremiumLock();
+
+    difficultyCards.forEach(card => {
+        card.addEventListener('click', function() {
+            if (this.dataset.level === 'premium' && !isPremiumActive()) {
+                window.location.href = 'premium_purchase.html';
+                return;
+            }
+            // Remove previous selection and border from all
+            difficultyCards.forEach(c => {
+                c.classList.remove('selected');
+                c.style.border = c.dataset.level === 'premium' ? '2px solid #FFD700' : '2px solid transparent';
+                c.style.boxShadow = '';
+            });
+            // Add selection to clicked card
+            this.classList.add('selected');
+            this.style.border = '4px solid #000';
+            this.style.boxShadow = '0 0 0 2px #0008';
+            selectedDifficulty = this.dataset.level;
+            // Hide error message
+            var diffErr = document.getElementById('difficulty-error');
+            if (diffErr) diffErr.classList.add('hidden');
+            validateForm();
+        });
+    });
+
+    // File upload handling with enhanced validation
+    const uploadArea = document.getElementById('upload-area');
+    const fileInput = document.getElementById('resume-upload');
+    const filePreview = document.getElementById('file-preview');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const removeFileBtn = document.getElementById('remove-file');
+    const uploadError = document.getElementById('upload-error');
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+        this.style.borderColor = '#3B82F6';
+        this.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        this.style.borderColor = resumeUploaded ? '#10B981' : '#EF4444';
+        this.style.backgroundColor = '';
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        this.style.backgroundColor = '';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileUpload(files[0]);
+        }
+    });
+
+    uploadArea.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            handleFileUpload(this.files[0]);
+        }
+    });
+
+    removeFileBtn.addEventListener('click', function() {
+        // Reset file input by replacing it with a clone (prevents repeated file dialog bug)
+        const newInput = fileInput.cloneNode(true);
+        fileInput.parentNode.replaceChild(newInput, fileInput);
+        // Re-attach event listener to new input
+        newInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                handleFileUpload(this.files[0]);
+            }
+        });
+        // Update reference
+        fileInput = newInput;
+        resumeUploaded = false;
+        uploadArea.classList.remove('hidden');
+        filePreview.classList.add('hidden');
+        uploadArea.style.borderColor = '#EF4444';
+        uploadError.classList.remove('hidden');
+        // Hide uploaded status
+        document.getElementById('upload-status').classList.add('hidden');
+        validateForm();
+    });
+
+    function handleFileUpload(file) {
+        // Validate file type
+        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Please upload a PDF, DOC, or DOCX file.');
+            return;
+        }
+
+        // Validate file size (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('File size must be less than 5MB.');
+            return;
+        }
+
+        // Show file preview
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        uploadArea.classList.add('hidden');
+        filePreview.classList.remove('hidden');
+        resumeUploaded = true;
+        uploadError.classList.add('hidden');
+
+        // Show uploaded status
+        document.getElementById('upload-status').classList.remove('hidden');
+
+        // Parse resume content (mock implementation)
+        parseResumeContent(file);
+        
+        validateForm();
+    }
+
+    function parseResumeContent(file) {
+        // Mock resume parsing - in real implementation, this would extract text from the file
+        const mockResumeData = {
+            skills: ['JavaScript', 'Python', 'React', 'Node.js', 'SQL'],
+            experience: ['Software Developer', 'Frontend Developer', 'Full Stack Developer'],
+            education: ['Computer Science', 'Software Engineering'],
+            yearsOfExperience: Math.floor(Math.random() * 10) + 1
+        };
+        
+        // Store parsed resume data for interview questions
+        localStorage.setItem('resumeData', JSON.stringify(mockResumeData));
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Enhanced form validation
+    function validateForm() {
+        const jobRole = document.getElementById('job-role').value;
+        const startBtn = document.getElementById('start-interview-btn');
+        // Focus area checkboxes
+        const focusCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"][value="technical"], input[type="checkbox"][value="behavioral"], input[type="checkbox"][value="industry"]'));
+        // All can be unticked, so no validation required for focus areas
+        const isValid = jobRole && selectedDifficulty && resumeUploaded && formalDressPassed;
+        startBtn.disabled = !isValid;
+        startBtn.style.opacity = isValid ? '1' : '0.6';
+        startBtn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+        // Show error messages for missing requirements
+        if (!resumeUploaded) {
+            uploadError.classList.remove('hidden');
+            uploadArea.style.borderColor = '#EF4444';
+        } else {
+            uploadError.classList.add('hidden');
+            uploadArea.style.borderColor = '#10B981';
+        }
+        if (!selectedDifficulty && (jobRole || resumeUploaded)) {
+            document.getElementById('difficulty-error').classList.remove('hidden');
+        } else {
+            document.getElementById('difficulty-error').classList.add('hidden');
+        }
+    }
+
+    // Job role change handler
+    document.getElementById('job-role').addEventListener('change', validateForm);
+
+    // Enhanced form submission with resume analysis
+    document.getElementById('interview-setup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!resumeUploaded) {
+            alert('Please upload your resume to continue. This is required for personalized interview questions.');
+            return;
+        }
+        
+        if (!selectedDifficulty) {
+            alert('Please select a difficulty level to continue.');
+            return;
+        }
+        
+        // Store enhanced setup data in localStorage
+        const setupData = {
+            jobRole: document.getElementById('job-role').value,
+            difficulty: selectedDifficulty,
+            duration: '45', // Default to 45 minutes
+            focusAreas: ['technical', 'behavioral', 'industry'], // Always include all
+            hasResume: true,
+            resumeFileName: fileName.textContent,
+            timestamp: new Date().toISOString(),
+            planType: isPremiumActive() ? 'premium' : 'basic',
+            isPremium: isPremiumActive()
+        };
+        localStorage.setItem('interviewSetup', JSON.stringify(setupData));
+
+        // Generate a new latestInterviewResults object for dashboard (simulate real-time result)
+        const latestResults = {
+            score: Math.floor(Math.random() * 21) + 80, // 80-100
+            communication: Math.floor(Math.random() * 21) + 75, // 75-95
+            emotional: Math.floor(Math.random() * 21) + 70, // 70-90
+            responseTime: (Math.random() * 2 + 1.5).toFixed(1) + 's',
+            eyeContact: (Math.floor(Math.random() * 21) + 70) + '%',
+            recommendation1: 'Maintain eye contact for confidence.',
+            recommendation2: 'Give more specific examples in technical answers.',
+            recommendation3: 'Practice salary negotiation with confidence.',
+            recommendation4: 'Prepare STAR stories for leadership.',
+            planType: isPremiumActive() ? 'premium' : 'basic',
+            completedAt: new Date().toISOString(),
+            // Add more fields as needed for premium
+        };
+        localStorage.setItem('latestInterviewResults', JSON.stringify(latestResults));
+
+        // Show loading state
+        const startBtn = document.getElementById('start-interview-btn');
+        startBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Analyzing Resume & Preparing Questions...
+        `;
+        startBtn.disabled = true;
+
+        // Simulate resume analysis
+        setTimeout(() => {
+            // Redirect to interview room
+            window.location.href = 'ai_interview_room.html';
+        }, 3000);
+    });
+
+    // Check premium status
+    function isPremiumActive() {
+        const active = localStorage.getItem('premiumActive');
+        const expiry = localStorage.getItem('premiumExpiry');
+        if (active && expiry) {
+            const now = new Date();
+            const expiryDate = new Date(expiry);
+            if (now < expiryDate) {
+                return true;
+            } else {
+                // Expired
+                localStorage.removeItem('premiumActive');
+                localStorage.removeItem('premiumExpiry');
+            }
+        }
+        return false;
+    }
+
+    // Remove duplicate premium click handler (now handled above)
+
+    // Initialize GSAP animations
+    gsap.from('.setup-card', {
+        duration: 0.8,
+        y: 30,
+        opacity: 0,
+        stagger: 0.2,
+        ease: 'power2.out'
+    });
+
+    gsap.from('.progress-step', {
+        duration: 0.6,
+        scale: 0,
+        stagger: 0.1,
+        ease: 'back.out(1.7)',
+        delay: 0.5
+    });
+
+    // Enhanced difficulty card animations
+    gsap.from('.difficulty-card', {
+        duration: 0.8,
+        scale: 0.9,
+        opacity: 0,
+        stagger: 0.1,
+        ease: 'power2.out',
+        delay: 1
+    });
+
+    // Auto-select demo difficulty for new users (removed - now requires manual selection)
+    // Ensure all focus areas are checked by default, but allow user to untick all
+    document.querySelectorAll('input[type="checkbox"][value="technical"], input[type="checkbox"][value="behavioral"], input[type="checkbox"][value="industry"]').forEach(cb => {
+        cb.checked = true;
+    });
+    // Initialize validation on page load
+    validateForm();
+
+    // Load AI Interviewer Dataset
+    const aiInterviewerDataset = {
+        "roles": {
+            "Software Developer / Engineer": {
+                "questions": [
+                    "Can you explain the difference between compiled and interpreted languages?",
+                    "Describe a challenging bug you encountered and how you fixed it.",
+                    "How do you ensure your code is secure?",
+                    "What is the difference between multithreading and multiprocessing?",
+                    "Explain the concept of Big O notation with an example.",
+                    "What’s the difference between REST and GraphQL APIs?",
+                    "Describe your approach to writing unit tests.",
+                    "How do you handle version control conflicts in Git?",
+                    "What’s your process for optimizing database queries?",
+                    "Explain SOLID principles in object-oriented programming.",
+                    "What’s the difference between synchronous and asynchronous programming?",
+                    "How do you manage memory in languages like C++?",
+                    "Describe a project where you implemented a design pattern.",
+                    "What’s the difference between TCP and UDP?",
+                    "How do you approach learning a new technology?",
+                    "Describe your experience with CI/CD pipelines.",
+                    "What’s the difference between SQL and NoSQL databases?",
+                    "How do you handle deadlines when working on multiple projects?",
+                    "What’s your experience with containerization tools like Docker?",
+                    "How do you debug production issues?"
+                ]
+            },
+            "Data Scientist / Data Analyst": {
+                "questions": [
+                    "Explain the difference between supervised and unsupervised learning.",
+                    "What is overfitting, and how do you prevent it?",
+                    "Describe a machine learning project you’ve worked on.",
+                    "What are precision and recall?",
+                    "Explain the difference between classification and regression.",
+                    "How do you handle missing data in a dataset?",
+                    "What is feature scaling, and why is it important?",
+                    "Describe your experience with Python libraries for data science.",
+                    "Explain the concept of cross-validation.",
+                    "What is the bias-variance trade-off?",
+                    "Describe a time you optimized a model for better performance.",
+                    "What’s the difference between bagging and boosting?",
+                    "How do you handle imbalanced datasets?",
+                    "Explain the purpose of dimensionality reduction.",
+                    "What’s the difference between SQL and NoSQL for data storage?",
+                    "How do you ensure data privacy in your projects?",
+                    "Describe your experience with deep learning frameworks.",
+                    "What’s the importance of feature engineering?",
+                    "How do you visualize complex data?",
+                    "What’s your experience with deploying machine learning models?"
+                ]
+            }
+        }
+    };
+
+    // Function to load questions based on selected role
+    function loadQuestionsForRole(role) {
+        const roleData = aiInterviewerDataset.roles[role];
+        if (roleData) {
+            const questions = roleData.questions.slice(0, 20); // Top 20 questions for basic plan
+            localStorage.setItem('interviewQuestions', JSON.stringify(questions));
+        } else {
+            console.error('Role not found in dataset:', role);
+        }
+    }
+
+    // Attach event listener to job role dropdown
+    document.getElementById('job-role').addEventListener('change', function() {
+        const selectedRole = this.value;
+        loadQuestionsForRole(selectedRole);
+    });
+
+    // Load Premium Interviewer Dataset
+    const premiumInterviewerDataset = {
+        "roles": {
+            "Software Developer / Engineer": {
+                "questions": [
+                    "What are the most important KPIs you track as a Software Developer / Engineer, and how have you moved them?",
+                    "Walk me through a recent end-to-end initiative you led as a Software Developer / Engineer. What changed?",
+                    "Describe a high-stakes decision you made as a Software Developer / Engineer. How did you de-risk it?",
+                    "As a Software Developer / Engineer, how do you onboard quickly to a new domain or organization?",
+                    "Tell me about a time your work as a Software Developer / Engineer directly impacted revenue, cost, or risk.",
+                    "Tell me about yourself and one recent accomplishment you’re proud of.",
+                    "Walk me through a challenging project: your role, obstacles, and outcome.",
+                    "Describe a time you influenced stakeholders with conflicting priorities.",
+                    "Give an example of how you handled a missed deadline or setback.",
+                    "Tell me about a disagreement with your manager—how did you handle it?",
+                    "How do you prioritize when everything is urgent?",
+                    "Describe a situation where you learned something quickly to deliver results.",
+                    "Tell me about a team conflict you resolved. What did you do?",
+                    "What’s your biggest professional mistake, and what changed afterward?",
+                    "How do you handle critical feedback you disagree with?",
+                    "How do you stay current in your field? Mention specific sources or communities.",
+                    "Describe your approach to documentation so others can build on your work.",
+                    "Explain a framework you use for decisions under uncertainty.",
+                    "Walk through how you estimate effort and set realistic timelines.",
+                    "How do you ensure quality before delivery? Tools and methods you use.",
+                    "Which KPIs or metrics matter most in this role and why?",
+                    "Describe how you identify and mitigate key risks early.",
+                    "How do you collaborate across functions in remote or hybrid teams?",
+                    "What’s your approach to onboarding into a new domain or codebase?",
+                    "Give an example of using data to persuade a decision.",
+                    "Explain a complex system you worked on end-to-end: architecture, trade-offs, and results.",
+                    "How do you approach system design for high-scale traffic? Give a real example.",
+                    "Walk through your incident response to a critical production outage.",
+                    "How do you set up CI/CD and quality gates? What metrics do you enforce?",
+                    "Discuss observability: logs, metrics, tracing, and dashboards you rely on.",
+                    "Explain your approach to security by design and secrets management.",
+                    "How do you reduce latency and improve throughput in real systems?",
+                    "What’s your approach to testing: unit, integration, e2e, and in-production checks?",
+                    "Describe a major refactor you led. Before/after metrics and risk management.",
+                    "How do you handle schema changes and backward compatibility?",
+                    "Explain caching strategies you used across client, CDN, and server tiers.",
+                    "Discuss feature flags, canary releases, and safe rollbacks.",
+                    "How do you plan capacity and cost optimization in cloud environments?",
+                    "Explain data privacy, PII protection, and compliance considerations you applied.",
+                    "Describe a time you improved developer productivity with tooling or processes.",
+                    "How do you prevent outages during peak events (e.g., campaigns, launches)?",
+                    "Explain trade-offs between monoliths and microservices in your context.",
+                    "How do you ensure accessibility and inclusive design in your products?",
+                    "Describe how you handle cross-team dependencies and API contracts.",
+                    "Explain your code review philosophy and examples of feedback that raised the bar.",
+                    "How do you select databases and data models for new features?",
+                    "Discuss containerization and orchestration choices you made and why.",
+                    "How do you design for eventual consistency and idempotency?",
+                    "Explain your approach to secrets rotation and supply-chain security (SBOM).",
+                    "How do you perform performance profiling and fix hotspots with evidence?"
+                ]
+            }
+        }
+    };
+
+    // Function to load premium questions based on selected role
+    function loadPremiumQuestionsForRole(role) {
+        const roleData = premiumInterviewerDataset.roles[role];
+        if (roleData) {
+            const questions = roleData.questions.slice(0, 50); // Top 50 questions for premium plan
+            localStorage.setItem('premiumInterviewQuestions', JSON.stringify(questions));
+        } else {
+            console.error('Role not found in premium dataset:', role);
+        }
+    }
+
+    // Attach event listener to job role dropdown for premium plan
+    document.getElementById('job-role').addEventListener('change', function() {
+        const selectedRole = this.value;
+        if (isPremiumActive()) {
+            loadPremiumQuestionsForRole(selectedRole);
+        }
+    });
+</script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

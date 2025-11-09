@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <title>Home Dashboard - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <!-- Intro.js CSS for interactive tour -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Intro.js library for interactive tour -->
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <style>
+        .gradient-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+        }
+        
+        .stats-counter {
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .action-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .premium-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            animation: shimmer 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shimmer {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 0.5s ease-in-out;
+        }
+        
+        .theme-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode {
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+        }
+        
+        .dark-mode .glass {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faiintervi7306back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+<meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-accent-50 transition-all duration-300">
+    <!-- Contact Us Banner -->
+    <!-- Interactive Tour Script -->
+    <script src="home_dashboard_tour.js"></script>
+    <!-- Top Banner: Buttons always on right -->
+    <div class="w-full bg-gradient-to-r from-primary-500 to-accent-500 py-3 px-4 sm:px-8 flex justify-end items-center">
+        <div class="flex gap-2 flex-1 justify-end items-center">
+            <a href="contact_us.html"
+               class="inline-flex items-center px-4 sm:px-8 py-2 sm:py-3 bg-white/90 hover:bg-white text-primary-700 font-extrabold text-base sm:text-xl rounded-xl sm:rounded-2xl shadow-lg transition-all duration-200"
+               style="backdrop-filter: blur(6px); letter-spacing: 0.05em;"
+            >
+                <svg class="w-6 h-6 sm:w-7 sm:h-7 mr-2 sm:mr-3 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10.5V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2v-4.5M16 12l-4 4m0 0l-4-4m4 4V8"/>
+                </svg>
+                <span class="hidden xs:inline">Contact Us</span>
+                <span class="inline xs:hidden">Contact</span>
+            </a>
+            <a href="about_us.html"
+               class="inline-flex items-center px-4 sm:px-8 py-2 sm:py-3 bg-white/90 hover:bg-white text-accent-700 font-extrabold text-base sm:text-xl rounded-xl sm:rounded-2xl shadow-lg transition-all duration-200"
+               style="backdrop-filter: blur(6px); letter-spacing: 0.05em;"
+            >
+                <svg class="w-6 h-6 sm:w-7 sm:h-7 mr-2 sm:mr-3 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 17l4-4-4-4m8 8V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2z"/>
+                </svg>
+                <span class="hidden xs:inline">About Us</span>
+                <span class="inline xs:hidden">About</span>
+            </a>
+        </div>
+        <div class="flex-shrink-0 flex items-center">
+            <img src="../images/company-logo.png" alt="Company Logo" class="w-20 h-22 sm:w-10 sm:h-10 object-contain ml-6" style="border-radius: 0rem; box-shadow: 1 5px 8px rgba(0,0,0,0.08);" />
+
+        </div>
+    </div>
+    <style>
+/* Responsive Contact Us Banner/Button */
+@media (max-width: 640px) {
+    .rounded-2xl { border-radius: 1rem !important; }
+    .rounded-xl { border-radius: 0.75rem !important; }
+    .text-xl { font-size: 1.1rem !important; }
+    .text-base { font-size: 1rem !important; }
+    .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
+    .py-3 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+    .mr-3 { margin-right: 0.5rem !important; }
+}
+@media (min-width: 641px) {
+    .px-4 { padding-left: 2rem !important; padding-right: 2rem !important; }
+    .py-2 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+}
+</style>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass backdrop-blur-md border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="hidden sm:block">
+                        <h1 class="text-2xl font-extrabold text-primary-800 tracking-wide flex items-center">
+                            <span class="mr-2">AI Interview Simulator</span>
+                        </h1>
+                    </div>
+                </div>
+                
+                <!-- Header Actions + Logo on right -->
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle p-2 rounded-lg glass hover:bg-white/30 transition-all duration-200">
+                        <svg id="sun-icon" class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-primary-600 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button id="profile-avatar-btn" class="flex items-center space-x-2 p-2 rounded-lg glass hover:bg-white/30 transition-all duration-200">
+                            <img id="profile-avatar-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User Avatar" class="w-8 h-8 rounded-full object-cover cursor-pointer" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <span id="profile-avatar-name" class="hidden sm:block text-sm font-medium text-primary-800 cursor-pointer">Alex Johnson</span>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Section -->
+        <section id="welcome-section" class="mb-8 opacity-0">
+            <div class="glass rounded-3xl p-6 sm:p-8 gradient-card">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                    <div class="mb-4 sm:mb-0">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-primary-800 mb-2">
+                            Welcome back, Alex! 👋
+                        </h2>
+                        <p class="text-secondary-600 text-lg">
+                            Ready to ace your next interview? Let's practice together.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div id="stats-interviews" class="text-center hidden">
+                            <div class="text-2xl font-bold stats-counter" id="stat-interviews">0</div>
+                            <div class="text-xs text-secondary-500">Interviews</div>
+                        </div>
+                        <div id="stats-avgscore" class="text-center hidden">
+                            <div class="text-2xl font-bold stats-counter" id="stat-avgscore">0.0</div>
+                            <div class="text-xs text-secondary-500">Avg Score</div>
+                        </div>
+                        <div id="stats-confidence" class="text-center hidden">
+                            <div class="text-2xl font-bold stats-counter" id="stat-confidence">0%</div>
+                            <div class="text-xs text-secondary-500">Confidence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscription Status Banner -->
+        <section id="subscription-banner" class="mb-8 opacity-0">
+            <div class="glass rounded-2xl p-4 border-l-4 border-accent-500">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-accent-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-primary-800">Free Plan Active</h3>
+                            <p class="text-sm text-secondary-600">3 interviews remaining this month</p>
+                        </div>
+                    </div>
+                    <a href="premium_purchase.html" class="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200 hover-scale">
+                        Upgrade Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Action Cards -->
+        <section id="action-cards" class="mb-8 opacity-0">
+            <h3 class="text-xl font-bold text-primary-800 mb-6">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Start New Interview -->
+                <div class="action-card glass rounded-2xl p-6 cursor-pointer" onclick="window.location.href='interview_setup.html'">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-primary-800 mb-2">Start New Interview</h4>
+                    <p class="text-secondary-600 text-sm mb-4">Practice with AI interviewer for your dream job</p>
+                    <div class="flex items-center text-primary-600 text-sm font-medium">
+                        <span>Begin Practice</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- View Progress -->
+                <div class="action-card glass rounded-2xl p-6 cursor-pointer" onclick="window.location.href='interview_results_dashboard.html'">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-500 to-accent-600 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-primary-800 mb-2">View Progress</h4>
+                    <p class="text-secondary-600 text-sm mb-4">Track your improvement and performance metrics</p>
+                    <div class="flex items-center text-accent-600 text-sm font-medium">
+                        <span>View Analytics</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Manage Subscription -->
+                <div class="action-card glass rounded-2xl p-6 cursor-pointer" onclick="window.location.href='premium_purchase.html'">
+                    <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-primary-800 mb-2">Manage Subscription</h4>
+                    <p class="text-secondary-600 text-sm mb-4">Upgrade to premium for unlimited interviews</p>
+                    <div class="flex items-center text-yellow-600 text-sm font-medium">
+                        <span>Go Premium</span>
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top Reviews -->
+        <section id="top-reviews" class="mb-8 opacity-0">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-primary-800">Top Reviews</h3>
+                <a href="client_reviews.html" class="text-primary-600 text-sm font-medium hover:text-primary-700 transition-colors">
+                    View All
+                </a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Show only 3 reviews -->
+                <div class="glass rounded-2xl p-6 flex flex-col space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full" alt="John D." />
+                        <div>
+                            <span class="font-semibold text-primary-800">John D.</span>
+                            <span class="ml-2 text-xs text-secondary-500">USA</span>
+                        </div>
+                    </div>
+                    <div class="text-secondary-700 text-sm italic">“The AI interview felt just like a real HR round. Helped me land my dream job!”</div>
+                    <div class="flex items-center space-x-1">
+                        <span class="text-yellow-400">★★★★★</span>
+                        <span class="text-xs text-secondary-500">Software Engineer</span>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-6 flex flex-col space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://randomuser.me/api/portraits/women/21.jpg" class="w-10 h-10 rounded-full" alt="Priya K." />
+                        <div>
+                            <span class="font-semibold text-primary-800">Priya K.</span>
+                            <span class="ml-2 text-xs text-secondary-500">India</span>
+                        </div>
+                    </div>
+                    <div class="text-secondary-700 text-sm italic">“The feedback helped me crack my campus placement!”</div>
+                    <div class="flex items-center space-x-1">
+                        <span class="text-yellow-400">★★★★★</span>
+                        <span class="text-xs text-secondary-500">Student</span>
+                    </div>
+                </div>
+                <div class="glass rounded-2xl p-6 flex flex-col space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://randomuser.me/api/portraits/men/14.jpg" class="w-10 h-10 rounded-full" alt="Rohit M." />
+                        <div>
+                            <span class="font-semibold text-primary-800">Rohit M.</span>
+                            <span class="ml-2 text-xs text-secondary-500">India</span>
+                        </div>
+                    </div>
+                    <div class="text-secondary-700 text-sm italic">“Very close to real interview experience. Highly recommend!”</div>
+                    <div class="flex items-center space-x-1">
+                        <span class="text-yellow-400">★★★★★</span>
+                        <span class="text-xs text-secondary-500">QA Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secondary Actions -->
+        <!-- No profile settings card here; profile is managed via the top avatar button and modal only. -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-secondary-200 bg-white/50 backdrop-blur-sm">
+
+    <!-- Profile Edit Modal -->
+    <div id="profile-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative">
+            <button id="close-profile-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+            <h2 class="text-xl font-bold text-primary-800 mb-4">Edit Profile</h2>
+            <form id="profile-form" class="space-y-4">
+                <div class="flex flex-col items-center">
+                    <label for="profile-photo" class="cursor-pointer">
+                        <img id="modal-avatar-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="w-20 h-20 rounded-full object-cover border-4 border-primary-200 mb-2" alt="Profile Photo" />
+                        <input type="file" id="profile-photo" accept="image/*" class="hidden" />
+                    </label>
+                    <span class="text-xs text-secondary-500">Click to change photo</span>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-primary-700 mb-1">Name</label>
+                    <input type="text" id="profile-name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-primary-700 mb-1">Date of Birth</label>
+                    <input type="date" id="profile-dob" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-primary-700 mb-1">Dream Company</label>
+                    <input type="text" id="profile-dream-company" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" />
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-2 rounded-lg font-semibold hover:shadow-lg transition-all">Save Changes</button>
+            </form>
+        </div>
+    </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p class="text-secondary-600 text-sm">
+                    © 2025 AI Interview Simulator. All Rights Reserved.
+                </p>
+                <p class="text-secondary-500 text-xs mt-2">
+                    POWERED BY <span class="font-bold text-accent-600">VANBA</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Floating Button and Chat Window -->
+<div id="chatbot-container" class="fixed bottom-6 right-6 z-50">
+    <button id="chatbot-toggle" class="w-14 h-14 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-transform">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+        </svg>
+    </button>
+    <div id="chatbot-window" style="display: none;" class="fixed bottom-20 right-6 w-80 bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-primary-500 to-accent-500 text-white p-4 flex justify-between items-center">
+            <h3 class="text-lg font-semibold">Chat with Us!</h3>
+            <button id="chatbot-close" class="text-white text-xl">&times;</button>
+        </div>
+        <div class="p-4 h-64 overflow-y-auto">
+            <div id="chatbot-messages" class="space-y-3">
+                <div class="text-sm text-secondary-700">Hi! How can I assist you today?</div>
+            </div>
+        </div>
+        <div class="p-4 border-t">
+            <input id="chatbot-input" type="text" placeholder="Type your message..." class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" />
+        </div>
+    </div>
+</div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const body = document.body;
+        
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        function updateTheme() {
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                body.classList.remove('bg-gradient-to-br', 'from-primary-50', 'via-white', 'to-accent-50');
+                body.classList.add('bg-gradient-to-br', 'from-secondary-900', 'via-secondary-800', 'to-primary-900');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.remove('bg-gradient-to-br', 'from-secondary-900', 'via-secondary-800', 'to-primary-900');
+                body.classList.add('bg-gradient-to-br', 'from-primary-50', 'via-white', 'to-accent-50');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            updateTheme();
+        });
+        
+        // Initialize theme
+        updateTheme();
+        
+        // GSAP Animations
+        function initAnimations() {
+            const tl = gsap.timeline();
+            
+            tl.to("#welcome-section", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            })
+            .to("#subscription-banner", {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out"
+            }, "-=0.4")
+            .to("#action-cards", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }, "-=0.3")
+            .to("#top-reviews", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }, "-=0.4")
+            .to("#secondary-actions", {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out"
+            }, "-=0.3");
+        }
+        
+        // Initialize animations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial positions for animation
+            gsap.set("#welcome-section, #subscription-banner, #action-cards, #top-reviews, #secondary-actions", { 
+                opacity: 0, 
+                y: 30 
+            });
+            
+            initAnimations();
+        });
+        
+        // Add hover effects to action cards
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                gsap.to(this, {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                gsap.to(this, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+        
+
+        // Dynamic interview stats logic
+        function updateStats() {
+            // Example: stats stored in localStorage as { interviews: 3, avgScore: 7.8, confidence: 85 }
+            const stats = JSON.parse(localStorage.getItem('interviewStats') || '{}');
+            const plan = localStorage.getItem('premiumActive') === 'true' ? 'premium' : 'free';
+            const interviews = stats.interviews || 0;
+            const avgScore = stats.avgScore || 0;
+            const confidence = stats.confidence || 0;
+            // Hide stats if no interviews yet
+            const showStats = interviews > 0;
+            document.getElementById('stats-interviews').classList.toggle('hidden', !showStats);
+            document.getElementById('stats-avgscore').classList.toggle('hidden', !showStats);
+            document.getElementById('stats-confidence').classList.toggle('hidden', !showStats);
+            if (showStats) {
+                document.getElementById('stat-interviews').textContent = interviews;
+                document.getElementById('stat-avgscore').textContent = avgScore.toFixed(1);
+                document.getElementById('stat-confidence').textContent = confidence + '%';
+                // Animate
+                gsap.to('#stat-interviews', { textContent: interviews, duration: 2, ease: 'power2.out', snap: { textContent: 1 } });
+                gsap.to('#stat-avgscore', { textContent: avgScore, duration: 2, ease: 'power2.out', snap: { textContent: 0.1 }, onUpdate: function() {
+                    document.getElementById('stat-avgscore').textContent = parseFloat(document.getElementById('stat-avgscore').textContent).toFixed(1);
+                }});
+                gsap.to('#stat-confidence', { textContent: confidence, duration: 2, ease: 'power2.out', snap: { textContent: 1 }, onUpdate: function() {
+                    document.getElementById('stat-confidence').textContent = Math.round(document.getElementById('stat-confidence').textContent) + '%';
+                }});
+            }
+        }
+        // Start stats animation after page load
+        setTimeout(updateStats, 1000);
+
+        // Update profile info on dashboard from localStorage
+        function updateProfileInfo() {
+            const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const avatarImg = document.getElementById('profile-avatar-img');
+            const avatarName = document.getElementById('profile-avatar-name');
+            // Update name
+            if (profile.name && avatarName) {
+                avatarName.textContent = profile.name;
+            }
+            // Update photo if present
+            if (profile.photo && avatarImg) {
+                avatarImg.src = profile.photo;
+            }
+            // Update welcome message
+            const welcomeName = document.querySelector('#welcome-section h2');
+            if (welcomeName && profile.name) {
+                welcomeName.innerHTML = `Welcome back, ${profile.name.split(' ')[0]}! 👋`;
+            }
+        }
+        // Update profile info on page load
+        document.addEventListener('DOMContentLoaded', updateProfileInfo);
+        
+        // Handle page visibility for performance
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                gsap.globalTimeline.pause();
+            } else {
+                gsap.globalTimeline.resume();
+            }
+        });
+        
+        // Add click tracking for analytics
+        document.querySelectorAll('[onclick]').forEach(element => {
+            element.addEventListener('click', function() {
+                console.log('Navigation:', this.getAttribute('onclick'));
+            });
+        });
+        
+
+        // Profile Modal Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const avatarBtn = document.getElementById('profile-avatar-btn');
+            const avatarImg = document.getElementById('profile-avatar-img');
+            const avatarName = document.getElementById('profile-avatar-name');
+            function goToProfileSettings() {
+                window.location.href = 'profile_settings.html';
+            }
+            avatarBtn.addEventListener('click', goToProfileSettings);
+            avatarImg.addEventListener('click', goToProfileSettings);
+            avatarName.addEventListener('click', goToProfileSettings);
+        });
+        
+        // Chatbot Toggle Logic
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+
+    chatbotToggle.addEventListener('click', () => {
+        chatbotWindow.classList.toggle('hidden');
+    });
+
+    chatbotClose.addEventListener('click', () => {
+        chatbotWindow.classList.add('hidden');
+    });
+
+    // Chatbot Knowledge Base
+    const chatbotKnowledgeBase = {
+        'interview setup': 'To set up an interview, go to the Interview Setup page and select your role and preferences.',
+        'premium plan': 'The Premium Plan offers unlimited interviews and access to advanced features. You can upgrade on the Premium Purchase page.',
+        'profile settings': 'You can update your profile information, including your name and dream company, on the Profile Settings page.',
+        'contact us': 'If you have any issues, you can reach out to us via the Contact Us page.',
+        'dashboard': 'The dashboard provides an overview of your progress, subscription status, and quick actions.',
+        'reviews': 'You can view client reviews on the Client Reviews page to see how others have benefited from our platform.',
+        'dark mode': 'You can toggle between light and dark mode using the theme toggle button on the top right corner.',
+        'subscription status': 'Your subscription status is displayed on the dashboard. Upgrade to premium for unlimited interviews.',
+        'start interview': 'Click on the Start New Interview card on the dashboard to begin practicing with the AI interviewer.',
+        'view progress': 'You can track your performance metrics and improvement on the Interview Results Dashboard page.',
+        'is premium free': 'The Premium Plan is not free. It offers additional features and unlimited interviews. You can check the pricing on the Premium Purchase page.',
+        'free plan': 'The Free Plan allows you to conduct up to 3 interviews per month. Upgrade to Premium for unlimited access.',
+        'ai interview': 'Our AI Interview Simulator provides a realistic interview experience to help you prepare for your dream job.',
+        'how to use': 'Navigate through the dashboard to access features like starting a new interview, viewing progress, and managing your subscription.',
+        'features': 'Our platform offers AI-driven interview simulations, performance analytics, and personalized feedback to help you succeed.'
+    };
+
+    // Text-to-Speech Functionality
+    function speakText(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        speechSynthesis.speak(utterance);
+    }
+
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+            const userMessage = chatbotInput.value.toLowerCase();
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'text-sm text-primary-800 text-right';
+            userMessageDiv.textContent = chatbotInput.value;
+            chatbotMessages.appendChild(userMessageDiv);
+
+            let botReply = 'I am sorry, I am not sure how to help with that. Please try rephrasing your question.';
+
+            for (const key in chatbotKnowledgeBase) {
+                if (userMessage.includes(key)) {
+                    botReply = chatbotKnowledgeBase[key];
+                    break;
+                }
+            }
+
+            const botReplyDiv = document.createElement('div');
+            botReplyDiv.className = 'text-sm text-secondary-700';
+            botReplyDiv.textContent = botReply;
+            chatbotMessages.appendChild(botReplyDiv);
+
+            // Speak the bot's reply
+            speakText(botReply);
+
+            chatbotInput.value = '';
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+
+        // Open chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            chatbotWindow.style.display = 'block';
+        });
+
+        // Close chatbot window
+        chatbotClose.addEventListener('click', () => {
+            chatbotWindow.style.display = 'none';
+        });
+
+        // Handle chatbot input
+        chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                const userMessage = document.createElement('div');
+                userMessage.className = 'text-sm text-right text-primary-700';
+                userMessage.textContent = chatbotInput.value;
+                chatbotMessages.appendChild(userMessage);
+
+                // Simulate bot response
+                const botMessage = document.createElement('div');
+                botMessage.className = 'text-sm text-secondary-700';
+                botMessage.textContent = 'Thank you for your message!';
+                chatbotMessages.appendChild(botMessage);
+
+                chatbotInput.value = '';
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+        });
+    });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+<!-- Include Chatbot CSS and JS -->
+<link rel="stylesheet" href="../css/chatbot.css">
+<script src="../public/chatbot.js" defer></script>
+</body>
+</html>

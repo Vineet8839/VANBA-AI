@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <title>Profile Settings - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0ffe9 100%);
+            min-height: 100vh;
+        }
+        .profile-container {
+            max-width: 480px;
+            margin: 3rem auto;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(16,185,129,0.10), 0 1.5px 8px rgba(59,130,246,0.08);
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        .profile-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .profile-form label {
+            display: block;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+        .profile-form input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border 0.2s;
+        }
+        .profile-form input:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+        .profile-form button {
+            background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+            display: block;
+            margin: 0 auto;
+        }
+        .profile-form button:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #059669 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .success-msg {
+            color: #10b981;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        /* Chatbot styles */
+        #chatbot-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 400px;
+            max-width: 90%;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+        }
+        #chatbot-toggle {
+            background: #3b82f6;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            outline: none;
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            transform: translateY(50%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #chatbot-window {
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            overflow: hidden;
+        }
+        .header {
+            background: #3b82f6;
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .messages {
+            flex: 1;
+            padding: 1rem;
+            background: #f8fafc;
+            overflow-y: auto;
+        }
+        .input {
+            display: flex;
+            border-top: 1px solid #e5e7eb;
+        }
+        .input input {
+            flex: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem 0 0 0.75rem;
+            outline: none;
+        }
+        #chatbot-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            outline: none;
+        }
+    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script src="../public/chatbot.js" defer></script>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-title">Profile Settings</div>
+        <form class="profile-form" id="profileForm" autocomplete="off">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+            <label for="profile-photo" style="cursor:pointer; display:inline-block;">
+                <img id="profile-avatar-preview" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile Photo" style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid #3b82f6; margin-bottom:0.5rem;" />
+                <input type="file" id="profile-photo" accept="image/*" style="display:none;" />
+            </label>
+            <div style="font-size:0.9em; color:#64748b;">Click to change photo</div>
+        </div>
+            <label>
+                Name:
+                <input type="text" name="name" id="name" required placeholder="Your Name">
+            </label>
+            <label>
+                Date of Birth:
+                <input type="date" name="dob" id="dob" required>
+            </label>
+            <label>
+                Phone Number:
+                <input type="tel" name="phone" id="phone" required pattern="[0-9]{10,15}" placeholder="e.g. 9876543210">
+            </label>
+            <label>
+                Dream Company:
+                <input type="text" name="dreamCompany" id="dreamCompany" required placeholder="Your Dream Company">
+            </label>
+            <button type="submit">Save Profile</button>
+            <div class="success-msg" id="successMsg" style="display:none;">Profile saved! Redirecting...</div>
+        </form>
+    </div>
+
+    <!-- Chatbot HTML -->
+    <div id="chatbot-container">
+        <button id="chatbot-toggle">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+            </svg>
+        </button>
+        <div id="chatbot-window">
+            <div class="header">
+                <h3>Chat with Us!</h3>
+                <button id="chatbot-close">&times;</button>
+            </div>
+            <div class="messages" id="chatbot-messages">
+                <div>Hi! How can I assist you today?</div>
+            </div>
+            <div class="input">
+                <input id="chatbot-input" type="text" placeholder="Type your message...">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load existing profile data if available
+        document.addEventListener('DOMContentLoaded', function() {
+            const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            if (profile.name) document.getElementById('name').value = profile.name;
+            if (profile.dob) document.getElementById('dob').value = profile.dob;
+            if (profile.phone) document.getElementById('phone').value = profile.phone;
+            if (profile.dreamCompany) document.getElementById('dreamCompany').value = profile.dreamCompany;
+            if (profile.photo) {
+                document.getElementById('profile-avatar-preview').src = profile.photo;
+            }
+        });
+
+        // Handle profile photo change
+        document.getElementById('profile-photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    document.getElementById('profile-avatar-preview').src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Save profile and redirect
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const profile = {
+                name: document.getElementById('name').value,
+                dob: document.getElementById('dob').value,
+                phone: document.getElementById('phone').value,
+                dreamCompany: document.getElementById('dreamCompany').value,
+                photo: document.getElementById('profile-avatar-preview').src
+            };
+            localStorage.setItem('userProfile', JSON.stringify(profile));
+            document.getElementById('successMsg').style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'home_dashboard.html';
+            }, 1200);
+        });
+
+        // Chatbot functionality
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+
+        chatbotToggle.addEventListener('click', () => {
+            chatbotContainer.style.display = 'flex';
+            setTimeout(() => {
+                chatbotContainer.classList.add('show');
+            }, 10);
+        });
+
+        chatbotClose.addEventListener('click', () => {
+            chatbotContainer.classList.remove('show');
+            setTimeout(() => {
+                chatbotContainer.style.display = 'none';
+            }, 300);
+        });
+
+        // Mockup for chatbot response
+        chatbotInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && chatbotInput.value.trim() !== '') {
+                const userMessage = chatbotInput.value.trim();
+                appendMessage('user', userMessage);
+                chatbotInput.value = '';
+
+                setTimeout(() => {
+                    const botResponse = getBotResponse(userMessage);
+                    appendMessage('bot', botResponse);
+                }, 500);
+            }
+        });
+
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function getBotResponse(message) {
+            // Simple keyword-based responses for demo
+            const responses = {
+                'hello': 'Hi there! How can I help you?',
+                'help': 'Sure, I am here to help you. Please provide more details about your issue.',
+                'bye': 'Goodbye! Have a great day!',
+            };
+            const lowerMessage = message.toLowerCase();
+            for (let key in responses) {
+                if (lowerMessage.includes(key)) {
+                    return responses[key];
+                }
+            }
+            return "I'm sorry, I don't understand that. Can you please rephrase?";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script src="interview_results_dashboard_tour.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <title>Interview Results - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .score-ring {
+            transform: rotate(-90deg);
+            transition: stroke-dasharray 2s ease-in-out;
+        }
+        
+        .celebration-confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, #3B82F6, #10B981);
+            animation: confetti-fall 3s ease-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .progress-bar-animated {
+            background: linear-gradient(90deg, #3B82F6, #10B981);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .recommendation-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .recommendation-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .chart-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Chatbot styles */
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        #chatbot-toggle {
+            background: #3B82F6;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        #chatbot-toggle:hover {
+            background: #2563eb;
+        }
+        
+        #chatbot-window {
+            display: none;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .header {
+            background: #3B82F6;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        #chatbot-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .messages {
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        .messages div {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            max-width: 80%;
+        }
+        
+        .messages .user {
+            background: #3B82F6;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .messages .bot {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        
+        .input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .input input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        .input button {
+            background: #3B82F6;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.3s;
+        }
+        
+        .input button:hover {
+            background: #2563eb;
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faiintervi7306back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-accent-700">
+    <!-- Celebration Confetti Container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50"></div>
+
+    <!-- Real-Time AI Analysis Section -->
+    <section id="realtime-analysis-section" class="mb-10">
+        <div class="glass rounded-3xl p-8 mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4 flex items-center">
+                <svg class="w-7 h-7 text-accent-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m4 4h-1a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2v7a2 2 0 01-2 2z"/></svg>
+                Real-Time AI Interview Analysis
+            </h2>
+            <div id="realtime-analysis-content">
+                <!-- Content will be injected by JS -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Header -->
+    <header class="glass border-b border-white/20 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="50" cy="50" r="35" fill="currentColor" opacity="0.1"/>
+                        <path d="M30 40 L50 25 L70 40 L50 55 Z" fill="currentColor"/>
+                        <circle cx="50" cy="65" r="8" fill="currentColor"/>
+                        <path d="M35 75 Q50 85 65 75" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span class="text-xl font-bold text-white">AI Interview Simulator</span>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="home_dashboard.html" class="text-blue-100 hover:text-white transition-colors duration-200">Dashboard</a>
+                    <a href="interview_setup.html" class="text-blue-100 hover:text-white transition-colors duration-200">New Interview</a>
+                    <a href="premium_purchase.html" class="text-blue-100 hover:text-white transition-colors duration-200">Premium</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden glass border-t border-white/20">
+            <div class="px-4 py-3 space-y-2">
+                <a href="home_dashboard.html" class="block text-blue-100 hover:text-white py-2 transition-colors duration-200">Dashboard</a>
+                <a href="interview_setup.html" class="block text-blue-100 hover:text-white py-2 transition-colors duration-200">New Interview</a>
+                <a href="premium_purchase.html" class="block text-blue-100 hover:text-white py-2 transition-colors duration-200">Premium</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Congratulations Header -->
+        <div id="congratulations-section" class="text-center mb-12 opacity-0">
+            <div class="glass rounded-3xl p-8 mb-8">
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    🎉 Interview Completed!
+                </h1>
+                <p class="text-lg text-blue-100 mb-6">
+                    Great job! Here's your detailed performance analysis and personalized recommendations.
+                </p>
+                <div class="text-sm text-blue-200">
+                    Completed on July 31, 2025 • Software Engineer Role • Advanced Level
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Score Section -->
+        <div id="score-section" class="mb-12 opacity-0">
+            <div class="glass rounded-3xl p-8 text-center">
+                <h2 class="text-2xl font-bold text-white mb-8">Overall Performance Score</h2>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 200 200">
+                            <!-- Background Circle -->
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                            <!-- Progress Circle -->
+                            <circle id="score-ring" cx="100" cy="100" r="80" fill="none" stroke="url(#scoreGradient)" stroke-width="8" stroke-linecap="round" class="score-ring" stroke-dasharray="0 502.4"/>
+                            <defs>
+                                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#3B82F6"/>
+                                    <stop offset="100%" style="stop-color:#10B981"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <div id="score-number" class="text-4xl font-bold text-white mb-2">0</div>
+                            <div class="text-blue-200 text-sm">out of 100</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-accent-400 mb-1">85th</div>
+                        <div class="text-blue-200 text-sm">Percentile</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-primary-400 mb-1">A-</div>
+                        <div class="text-blue-200 text-sm">Grade</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-white mb-1">15/15</div>
+                        <div class="text-blue-200 text-sm">Questions Answered</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Metrics -->
+        <div id="metrics-section" class="mb-12 opacity-0">
+            <h2 class="text-2xl font-bold text-white mb-8 text-center">Performance Breakdown</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Communication Skills Chart -->
+                <div class="chart-container rounded-3xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 text-center">Communication Skills</h3>
+                    <div class="relative h-64">
+                        <canvas id="communicationChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <div class="text-2xl font-bold text-primary-400">82/100</div>
+                        <div class="text-blue-200 text-sm">Above Average</div>
+                    </div>
+                </div>
+                
+                <!-- Emotional Confidence Chart -->
+                <div class="chart-container rounded-3xl p-6">
+                    <h3 class="text-xl font-semibold text-white mb-4 text-center">Emotional Confidence</h3>
+                    <div class="relative h-64">
+                        <canvas id="emotionalChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <div class="text-2xl font-bold text-accent-400">78/100</div>
+                        <div class="text-blue-200 text-sm">Good Performance</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Answer Quality Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Answer Quality</h4>
+                    <div class="text-3xl font-bold text-white mb-2">85</div>
+                    <div class="text-blue-200 text-sm mb-3">Excellent responses</div>
+                    <div class="w-full bg-secondary-700 rounded-full h-2">
+                        <div class="progress-bar-animated h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-12 h-12 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Response Time</h4>
+                    <div class="text-3xl font-bold text-white mb-2">2.3s</div>
+                    <div class="text-blue-200 text-sm mb-3">Average thinking time</div>
+                    <div class="w-full bg-secondary-700 rounded-full h-2">
+                        <div class="progress-bar-animated h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card rounded-2xl p-6 text-center">
+                    <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Eye Contact</h4>
+                    <div class="text-3xl font-bold text-white mb-2">72%</div>
+                    <div class="text-blue-200 text-sm mb-3">Needs improvement</div>
+                    <div class="w-full bg-secondary-700 rounded-full h-2">
+                        <div class="progress-bar-animated h-2 rounded-full" style="width: 72%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div id="recommendations-section" class="mb-12 opacity-0">
+            <h2 class="text-2xl font-bold text-white mb-8 text-center">AI-Generated Recommendations</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="recommendation-card rounded-2xl p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Improve Eye Contact</h4>
+                            <p class="text-blue-200 text-sm mb-3">
+                                Practice maintaining eye contact with the camera for 3-5 seconds at a time. This shows confidence and engagement.
+                            </p>
+                            <button class="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors">
+                                View detailed tips →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recommendation-card rounded-2xl p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-accent-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Enhance Technical Answers</h4>
+                            <p class="text-blue-200 text-sm mb-3">
+                                Include more specific examples and quantifiable results when discussing your technical experience.
+                            </p>
+                            <button class="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors">
+                                View detailed tips →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recommendation-card rounded-2xl p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Salary Negotiation</h4>
+                            <p class="text-blue-200 text-sm mb-3">
+                                Practice discussing compensation with confidence. Research market rates and prepare your value proposition.
+                            </p>
+                            <button class="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors">
+                                View detailed tips →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recommendation-card rounded-2xl p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Team Leadership Stories</h4>
+                            <p class="text-blue-200 text-sm mb-3">
+                                Prepare more detailed examples of leadership experiences using the STAR method (Situation, Task, Action, Result).
+                            </p>
+                            <button class="text-accent-400 text-sm font-medium hover:text-accent-300 transition-colors">
+                                View detailed tips →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Breakdown -->
+        <div id="questions-section" class="mb-12 opacity-0">
+            <h2 class="text-2xl font-bold text-white mb-8 text-center">Question-by-Question Analysis</h2>
+            
+            <div class="space-y-4">
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h4 class="text-lg font-semibold text-white mb-2">Q1: Tell me about yourself</h4>
+                            <div class="flex items-center space-x-4 mb-3">
+                                <span class="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm">Excellent</span>
+                                <span class="text-blue-200 text-sm">Difficulty: Basic</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-green-400">9.2/10</div>
+                            <div class="text-blue-200 text-sm">Score</div>
+                        </div>
+                    </div>
+                    <p class="text-blue-200 text-sm mb-3">
+                        <strong>Your Response:</strong> "I'm a software engineer with 3 years of experience in full-stack development..."
+                    </p>
+                    <p class="text-blue-200 text-sm">
+                        <strong>Feedback:</strong> Great structure and confidence. Consider adding more specific achievements.
+                    </p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h4 class="text-lg font-semibold text-white mb-2">Q2: Describe a challenging project</h4>
+                            <div class="flex items-center space-x-4 mb-3">
+                                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm">Good</span>
+                                <span class="text-blue-200 text-sm">Difficulty: Intermediate</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-yellow-400">7.8/10</div>
+                            <div class="text-blue-200 text-sm">Score</div>
+                        </div>
+                    </div>
+                    <p class="text-blue-200 text-sm mb-3">
+                        <strong>Your Response:</strong> "I worked on a project that had tight deadlines and complex requirements..."
+                    </p>
+                    <p class="text-blue-200 text-sm">
+                        <strong>Feedback:</strong> Good example, but could benefit from more specific metrics and outcomes.
+                    </p>
+                </div>
+                
+                <button class="w-full glass rounded-2xl p-4 text-center text-blue-200 hover:text-white transition-colors">
+                    View All 15 Questions →
+                </button>
+            </div>
+        </div>
+
+        <!-- Premium Features -->
+        <div id="premium-section" class="mb-12 opacity-0">
+            <div class="glass rounded-3xl p-8 text-center">
+                <div class="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4">Unlock Premium Features</h3>
+                <p class="text-blue-200 mb-6">
+                    Get access to interview recording playback, detailed emotion analysis, and downloadable PDF reports.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">Video Playback</h4>
+                        <p class="text-blue-200 text-sm">Review your interview performance</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">Emotion Analysis</h4>
+                        <p class="text-blue-200 text-sm">Detailed facial expression insights</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-white mb-1">PDF Reports</h4>
+                        <p class="text-blue-200 text-sm">Professional downloadable reports</p>
+                    </div>
+                </div>
+                <a href="premium_purchase.html" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-2xl hover:from-yellow-500 hover:to-orange-600 transition-all duration-300 transform hover:scale-105">
+                    Upgrade to Premium
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+                <a id="download-report-btn" href="#" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl hover:from-primary-600 hover:to-accent-600 transition-all duration-300 transform hover:scale-105 mt-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Download Full Report Card (PDF)
+                </a>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div id="actions-section" class="text-center opacity-0">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="interview_setup.html" class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-2xl hover:from-primary-700 hover:to-primary-800 transition-all duration-300 transform hover:scale-105">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Start New Interview
+                </a>
+                
+                <a href="home_dashboard.html" class="inline-flex items-center px-8 py-3 glass text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h2a2 2 0 012 2v0H8v0z"/>
+                    </svg>
+                    View Dashboard
+                </a>
+                
+                <button id="share-btn" class="inline-flex items-center px-8 py-3 glass text-white font-semibold rounded-2xl hover:bg-white/10 transition-all duration-300">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                    </svg>
+                    Share Results
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Include Chatbot CSS and JS -->
+<link rel="stylesheet" href="../css/chatbot.css">
+<script src="../public/chatbot.js" defer></script>
+
+<!-- Chatbot HTML -->
+<div id="chatbot-container">
+    <button id="chatbot-toggle">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+        </svg>
+    </button>
+    <div id="chatbot-window">
+        <div class="header">
+            <h3>Chat with Us!</h3>
+            <button id="chatbot-close">&times;</button>
+        </div>
+        <div class="messages" id="chatbot-messages">
+            <div>Hi! How can I assist you today?</div>
+        </div>
+        <div class="input">
+            <input id="chatbot-input" type="text" placeholder="Type your message...">
+        </div>
+    </div>
+</div>
+
+    <script>
+try {
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Create celebration confetti
+    function createConfetti() {
+        const container = document.getElementById('confetti-container');
+        const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'celebration-confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            container.appendChild(confetti);
+            setTimeout(() => {
+                if (confetti.parentNode) {
+                    confetti.parentNode.removeChild(confetti);
+                }
+            }, 3000);
+        }
+    }
+
+    // Animate score ring
+    function animateScoreRing(targetScore) {
+        const ring = document.getElementById('score-ring');
+        const scoreNumber = document.getElementById('score-number');
+        const circumference = 2 * Math.PI * 80; // radius = 80
+        const progress = (targetScore / 100) * circumference;
+        setTimeout(() => {
+            ring.style.strokeDasharray = `${progress} ${circumference}`;
+        }, 500);
+        let currentScore = 0;
+        const increment = targetScore / 60;
+        const timer = setInterval(() => {
+            currentScore += increment;
+            if (currentScore >= targetScore) {
+                currentScore = targetScore;
+                clearInterval(timer);
+            }
+            scoreNumber.textContent = Math.round(currentScore);
+        }, 16);
+    }
+
+    // Initialize charts
+    function initCharts() {
+        const commCtx = document.getElementById('communicationChart').getContext('2d');
+        new Chart(commCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Clarity', 'Pace', 'Volume', 'Articulation', 'Confidence'],
+                datasets: [{
+                    label: 'Your Score',
+                    data: [85, 78, 82, 80, 88],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'rgba(255, 255, 255, 0.6)', backdropColor: 'transparent' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 12 } }
+                    }
+                }
+            }
+        });
+
+        const emotCtx = document.getElementById('emotionalChart').getContext('2d');
+        new Chart(emotCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Confident', 'Nervous', 'Neutral'],
+                datasets: [{
+                    data: [65, 15, 20],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(156, 163, 175, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(239, 68, 68, 1)',
+                        'rgba(156, 163, 175, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)',
+                            padding: 20,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Share functionality
+    document.getElementById('share-btn').addEventListener('click', function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'My Interview Results - AI Interview Simulator',
+                text: 'I just completed an AI interview simulation and scored 82/100! Check out this amazing practice tool.',
+                url: window.location.href
+            });
+        } else {
+            const text = 'I just completed an AI interview simulation and scored 82/100! Check out this amazing practice tool: ' + window.location.href;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Results copied to clipboard!');
+            });
+        }
+    });
+
+    // Download Report Card as PDF (Premium Feature)
+    document.getElementById('download-report-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        if (typeof html2pdf === "undefined") {
+            alert("PDF download not available. Please contact support.");
+            return;
+        }
+        const element = document.querySelector('main');
+        html2pdf().set({
+            margin: 0.5,
+            filename: 'AI_Interview_Report.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        }).from(element).save();
+    });
+
+    // Initialize animations
+    function initAnimations() {
+        const tl = gsap.timeline();
+        tl.to("#congratulations-section", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out"
+        })
+        .to("#score-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            onComplete: () => animateScoreRing(82)
+        }, "-=0.5")
+        .to("#metrics-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4")
+        .to("#recommendations-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4")
+        .to("#questions-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4")
+        .to("#premium-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4")
+        .to("#actions-section", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4");
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        gsap.set("#congratulations-section, #score-section, #metrics-section, #recommendations-section, #questions-section, #premium-section, #actions-section", { 
+            opacity: 0, 
+            y: 30 
+        });
+        setTimeout(() => {
+            createConfetti();
+            initAnimations();
+            initCharts();
+        }, 500);
+
+        // Premium gating logic: check expiry and show/hide premium features
+        const premiumActive = localStorage.getItem('premiumActive') === 'true';
+        const premiumExpiry = localStorage.getItem('premiumExpiry');
+        const now = new Date();
+        let isPremium = false;
+        if (premiumActive && premiumExpiry) {
+            const expiryDate = new Date(premiumExpiry);
+            if (now < expiryDate) {
+                isPremium = true;
+            } else {
+                // Expired, clear premium
+                localStorage.setItem('premiumActive', 'false');
+                isPremium = false;
+            }
+        }
+        // Show/hide premium section and download button
+        const premiumSection = document.getElementById('premium-section');
+        const downloadBtn = document.getElementById('download-report-btn');
+        if (isPremium) {
+            if (premiumSection) premiumSection.style.opacity = 1;
+            if (downloadBtn) downloadBtn.style.display = '';
+        } else {
+            if (premiumSection) premiumSection.style.opacity = 0.5;
+            if (downloadBtn) downloadBtn.style.display = 'none';
+        }
+
+        // Real-Time Results: Only show latest, clear previous on new interview
+        // (Assume interview page sets latestInterviewResults in localStorage)
+        const analysis = JSON.parse(localStorage.getItem('latestInterviewResults') || '{}');
+        // Plan logic: basic or premium
+        let planType = 'basic';
+        if (isPremium) planType = 'premium';
+        if (analysis && analysis.planType) planType = analysis.planType;
+
+        // Show/hide sections based on plan
+        // Always show: Overall Performance Score, Performance Breakdown
+        document.getElementById('score-section').style.display = '';
+        document.getElementById('metrics-section').style.display = '';
+        // Premium only: Recommendations, Questions, Premium Section
+        document.getElementById('recommendations-section').style.display = (planType === 'premium') ? '' : 'none';
+        document.getElementById('questions-section').style.display = (planType === 'premium') ? '' : 'none';
+        document.getElementById('premium-section').style.display = (planType === 'premium') ? '' : 'none';
+
+        // Optionally lock premium-only features visually for basic
+        if (planType === 'basic') {
+            // Lock premium section visually
+            if (premiumSection) premiumSection.style.opacity = 0.5;
+            if (downloadBtn) downloadBtn.style.display = 'none';
+        }
+
+        // Real-Time AI Analysis rendering (optional, can be extended)
+        const analysisDiv = document.getElementById('realtime-analysis-content');
+        if (analysis && Object.keys(analysis).length > 0) {
+            let html = '';
+            if (planType === 'premium') {
+                html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class='text-lg font-semibold text-white mb-2'>AI Summary</h4>
+                        <p class='text-blue-200 mb-2'>${analysis.summary || 'You performed well across all key areas. Keep practicing for even better results!'}</p>
+                        <ul class='text-blue-200 text-sm mb-2'>
+                            <li><strong>Score:</strong> ${analysis.score || '--'}/100</li>
+                            <li><strong>Communication:</strong> ${analysis.communication || '--'}</li>
+                            <li><strong>Emotional Intelligence:</strong> ${analysis.emotional || '--'}</li>
+                            <li><strong>Response Time:</strong> ${analysis.responseTime || '2.3s'}</li>
+                            <li><strong>Eye Contact:</strong> ${analysis.eyeContact || '72%'}</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class='text-lg font-semibold text-white mb-2'>AI Recommendations</h4>
+                        <ul class='text-blue-200 text-sm'>
+                            <li>• ${analysis.recommendation1 || 'Maintain eye contact for confidence.'}</li>
+                            <li>• ${analysis.recommendation2 || 'Give more specific examples in technical answers.'}</li>
+                            <li>• ${analysis.recommendation3 || 'Practice salary negotiation with confidence.'}</li>
+                            <li>• ${analysis.recommendation4 || 'Prepare STAR stories for leadership.'}</li>
+                        </ul>
+                    </div>
+                </div>`;
+            } else {
+                html += `<div>
+                    <h4 class='text-lg font-semibold text-white mb-2'>AI Summary</h4>
+                    <p class='text-blue-200 mb-2'>${analysis.summary || 'You performed well. Upgrade to Premium for detailed analysis and recommendations.'}</p>
+                    <ul class='text-blue-200 text-sm mb-2'>
+                        <li><strong>Score:</strong> ${analysis.score || '--'}/100</li>
+                        <li><strong>Communication:</strong> ${analysis.communication || '--'}</li>
+                        <li><strong>Emotional Intelligence:</strong> ${analysis.emotional || '--'}</li>
+                    </ul>
+                    <div class='mt-4'>
+                        <a href='premium_purchase.html' class='inline-flex items-center px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-semibold rounded-xl hover:from-yellow-500 hover:to-orange-600 transition-all duration-300'>Unlock Full Analysis</a>
+                    </div>
+                </div>`;
+            }
+            analysisDiv.innerHTML = html;
+        } else {
+            analysisDiv.innerHTML = `<div class='text-blue-200'>No analysis data available.</div>`;
+        }
+    });
+
+// On new interview, interview page should set latestInterviewResults in localStorage and remove previous
+// Example (to be run on interview completion):
+// localStorage.setItem('latestInterviewResults', JSON.stringify({
+//   score: 90,
+//   communication: 85,
+//   emotional: 80,
+//   planType: isPremium ? 'premium' : 'basic',
+//   ...other metrics
+// }));
+    // Handle page visibility for performance
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            gsap.globalTimeline.pause();
+        } else {
+            gsap.globalTimeline.resume();
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const data = JSON.parse(localStorage.getItem('latestInterviewResults') || '{}');
+    if (data && data.score) {
+        document.getElementById('score-number').textContent = data.score;
+        // Update other fields as needed
+        // Example:
+        // document.getElementById('communication-score').textContent = data.communication;
+        // document.getElementById('emotional-score').textContent = data.emotional;
+    }
+});
+} catch (error) {
+    console.error("Error in script:", error);
+}
+</script>
+    <script>
+    // Inject real-time, plan-based AI analysis and feedback
+    document.addEventListener('DOMContentLoaded', function() {
+        const analysisDiv = document.getElementById('realtime-analysis-content');
+        const data = JSON.parse(localStorage.getItem('latestInterviewResults') || '{}');
+        if (Object.keys(data).length > 0) {
+            let html = `<div class='mb-4'><span class='badge' style='background:#3b82f6;'>${data.plan ? data.plan.charAt(0).toUpperCase() + data.plan.slice(1) : 'Basic'} Plan</span></div>`;
+            html += `<div class='mb-2'><strong>Performance:</strong> <span style='color:#10b981;'>${data.performance || '--'}%</span></div>`;
+            html += `<div class='mb-2'><strong>Questions Answered:</strong> ${data.totalAnswered || 0} / ${data.totalQuestions || 0}</div>`;
+            html += `<div class='mb-2'><strong>Strengths:</strong> <ul class='list'>${(data.strengths||[]).map(s=>`<li>✅ ${s}</li>`).join('')}</ul></div>`;
+            html += `<div class='mb-2'><strong>Areas for Improvement:</strong> <ul class='list'>${(data.improvements||[]).map(s=>`<li>⚡ ${s}</li>`).join('')}</ul></div>`;
+            html += `<div class='mb-2'><strong>AI Interviewer Feedback:</strong><div class='feedback-box'>${data.feedback || 'No feedback available.'}</div></div>`;
+            html += `<div class='mb-2'><strong>Date:</strong> ${data.timestamp ? new Date(data.timestamp).toLocaleString() : ''}</div>`;
+            if (data.plan === 'premium') {
+                html += `<div class='mt-4'><strong>Premium Insights:</strong><ul class='list'><li>Advanced behavioral analysis</li><li>AI-powered improvement plan</li><li>Bookmark top answers</li></ul></div>`;
+            }
+            analysisDiv.innerHTML = html;
+        } else {
+            analysisDiv.innerHTML = `<div class='text-blue-200'>No analysis data available.</div>`;
+        }
+    });
+    </script>
+    <script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <title>Contact Us - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/chatbot.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0ffe9 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .contact-container {
+            max-width: 600px;
+            margin: 4rem auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 2rem;
+            box-shadow: 0 8px 40px rgba(16,185,129,0.10), 0 1.5px 8px rgba(59,130,246,0.08);
+            padding: 2.5rem 2rem 2rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        .contact-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .contact-desc {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .contact-form label {
+            display: block;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border 0.2s;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+        .contact-form button {
+            background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 2.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+        }
+        .contact-form button:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #059669 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        /* 3D Animation */
+        .contact-3d {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        /* Chatbot Styles */
+        #chatbot-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            width: 400px;
+            max-width: 90%;
+            display: none;
+            flex-direction: column;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #chatbot-toggle {
+            background: #3b82f6;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 50%;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.2s;
+        }
+        #chatbot-toggle:hover {
+            background: #2563eb;
+        }
+        #chatbot-window {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            border-top: 4px solid #3b82f6;
+        }
+        .header {
+            background: #3b82f6;
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        #chatbot-close {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            outline: none;
+        }
+        .messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .messages div {
+            margin-bottom: 0.5rem;
+        }
+        .input {
+            display: flex;
+            padding: 0.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        #chatbot-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            outline: none;
+            font-size: 1rem;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 700px) {
+            .contact-container { padding: 1.2rem 0.5rem 1.5rem 0.5rem; }
+            .contact-title { font-size: 1.5rem; }
+            .contact-3d { display: none; }
+            #chatbot-container { width: 90%; }
+        }
+    </style>
+    <!-- 3D Animation: LottieFiles CDN -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script src="../public/chatbot.js" defer></script>
+</head>
+<body>
+    <div class="contact-container">
+        <div class="contact-3d">
+            <lottie-player src="https://lottie.host/6e6b1b8d-6e5c-4d7e-8b7e-7e3e9c6e8e8e/3d-mail.json" background="transparent" speed="1" style="width: 120px; height: 120px;" loop autoplay></lottie-player>
+        </div>
+        <div class="contact-title">Contact Us</div>
+        <div class="contact-desc">
+            Have a question, feedback, or need support? Fill out the form below and our team will get back to you soon!
+        </div>
+        <!-- Contact Form -->
+        <form class="contact-form" action="https://formspree.io/f/mdkddlpz" method="POST">
+            <label>
+                Your email:
+                <input type="email" name="email" required placeholder="you@example.com">
+            </label>
+            <label>
+                Your message:
+                <textarea name="message" rows="5" required placeholder="Type your message here..."></textarea>
+            </label>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <!-- Subtle floating 3D background effect -->
+    <lottie-player src="https://lottie.host/7e7e7e7e-7e7e-7e7e-7e7e-7e7e7e7e7e7e/abstract-bg.json" background="transparent" speed="1" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;" loop autoplay></lottie-player>
+
+    <!-- Chatbot HTML -->
+    <div id="chatbot-container">
+        <button id="chatbot-toggle">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+            </svg>
+        </button>
+        <div id="chatbot-window">
+            <div class="header">
+                <h3>Chat with Us!</h3>
+                <button id="chatbot-close">&times;</button>
+            </div>
+            <div class="messages" id="chatbot-messages">
+                <div>Hi! How can I assist you today?</div>
+            </div>
+            <div class="input">
+                <input id="chatbot-input" type="text" placeholder="Type your message...">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

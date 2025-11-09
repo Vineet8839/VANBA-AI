@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
+    <script src="premium_purchase_tour.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Purchase - AI Interview Simulator</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <meta name="google-adsense-account" content="ca-pub-6098180211265684">
+    <style>
+        .plan-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
+        
+        .popular-badge {
+            background: linear-gradient(135deg, #3B82F6, #10B981);
+            animation: pulse 2s infinite;
+        }
+        
+        .feature-check {
+            color: #10B981;
+            animation: checkmark 0.5s ease-in-out;
+        }
+        
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .payment-method {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .payment-method.active {
+            border-color: #3B82F6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #3B82F6;
+            animation: confetti-fall 3s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .success-animation {
+            animation: successPulse 0.6s ease-in-out;
+        }
+        
+        @keyframes successPulse {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Faiintervi7306back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.6"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6098180211265684" crossorigin="anonymous"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-accent-700">
+    <!-- Header -->
+    <header class="glass border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-white" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="50" cy="50" r="35" fill="currentColor" opacity="0.1"/>
+                        <path d="M30 40 L50 25 L70 40 L50 55 Z" fill="currentColor"/>
+                        <circle cx="50" cy="65" r="8" fill="currentColor"/>
+                        <path d="M35 75 Q50 85 65 75" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span class="text-xl font-bold text-white">AI Interview Simulator</span>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="home_dashboard.html" class="text-blue-100 hover:text-white transition-colors">Dashboard</a>
+                    <a href="interview_setup.html" class="text-blue-100 hover:text-white transition-colors">Practice</a>
+                    <a href="premium_purchase.html" class="text-white font-medium">Premium</a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden glass border-t border-white/10">
+            <div class="px-4 py-3 space-y-2">
+                <a href="home_dashboard.html" class="block text-blue-100 hover:text-white py-2">Dashboard</a>
+                <a href="interview_setup.html" class="block text-blue-100 hover:text-white py-2">Practice</a>
+                <a href="premium_purchase.html" class="block text-white font-medium py-2">Premium</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <nav class="flex items-center space-x-2 text-sm">
+            <a href="home_dashboard.html" class="text-blue-200 hover:text-white transition-colors">Dashboard</a>
+            <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <span class="text-white font-medium">Premium Purchase</span>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <!-- Header Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                Unlock Premium Features
+            </h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Get access to advanced analytics, interview recordings, personalized feedback, and unlimited practice sessions
+            </p>
+        </div>
+
+        <!-- Subscription Plans -->
+        <div class="grid md:grid-cols-1 gap-8 max-w-md mx-auto" id="subscription-plans">
+            <div class="plan-card glass rounded-3xl p-8 relative">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-white mb-2">Premium Plan</h3>
+                    <div class="flex items-baseline justify-center mb-4">
+                        <span class="text-4xl font-bold text-white">₹0</span>
+                        <span class="text-blue-200 ml-2">/6 hours</span>
+                    </div>
+                    <p class="text-blue-100">Unlock all features for 6 hours</p>
+                </div>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center text-white">
+                        <svg class="w-5 h-5 feature-check mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Unlimited practice sessions
+                    </li>
+                    <li class="flex items-center text-white">
+                        <svg class="w-5 h-5 feature-check mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Advanced analytics dashboard
+                    </li>
+                    <li class="flex items-center text-white">
+                        <svg class="w-5 h-5 feature-check mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Interview recordings download
+                    </li>
+                    <li class="flex items-center text-white">
+                        <svg class="w-5 h-5 feature-check mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        Personalized feedback reports
+                    </li>
+                    <li class="flex items-center text-white">
+                        <svg class="w-5 h-5 feature-check mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        All advanced AI features unlocked
+                    </li>
+                </ul>
+                <button class="w-full bg-accent-600 hover:bg-accent-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors select-plan-btn" data-plan="premium" data-price="0">
+                    Unlock Premium for 12 Hours
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div id="payment-section" class="hidden">
+            <div class="max-w-2xl mx-auto">
+                <div class="glass rounded-3xl p-8">
+                    <h2 class="text-2xl font-bold text-white mb-6 text-center">Complete Your Purchase</h2>
+                    <!-- Order Summary -->
+                    <div class="bg-white/10 rounded-2xl p-6 mb-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Order Summary</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-blue-100" id="selected-plan-name">Daily Premium Access</span>
+                            <span class="text-white font-semibold" id="selected-plan-price">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-blue-100">GST (18%)</span>
+                            <span class="text-white" id="gst-amount">₹0</span>
+                        </div>
+                        <hr class="border-white/20 my-3" />
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-semibold text-white">Total</span>
+                            <span class="text-xl font-bold text-white" id="total-amount">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Only Pay Button Remains -->
+                    <button id="pay-now-btn" class="w-full bg-accent-600 hover:bg-accent-700 text-white font-semibold py-4 px-6 rounded-xl transition-colors text-lg">
+                        Pay Now - <span id="pay-amount">₹0</span>
+                    </button>
+                    
+                    <!-- Back Button -->
+                    <button id="back-to-plans" class="w-full mt-4 text-blue-200 hover:text-white transition-colors">
+                        ← Back to Plans
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="glass rounded-3xl p-8 max-w-md w-full text-center success-animation">
+                <div class="w-20 h-20 bg-accent-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-4">Payment Successful!</h3>
+                <p class="text-blue-100 mb-6">Your premium features have been activated. You can now access all advanced features.</p>
+                <button id="continue-btn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors">
+                    Continue to Dashboard
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass border-t border-white/10 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p class="text-blue-200 text-sm">
+                    © 2025 AI Interview Simulator. All Rights Reserved.
+                </p>
+                <p class="text-blue-300 text-xs mt-2">
+                    Powered by VANBA
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Include Chatbot CSS and JS -->
+<link rel="stylesheet" href="../css/chatbot.css">
+<script src="../public/chatbot.js" defer></script>
+
+<!-- Chatbot HTML -->
+<div id="chatbot-container">
+    <button id="chatbot-toggle">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2m10-4H7a2 2 0 00-2 2v0a2 2 0 002 2h10a2 2 0 002-2v0a2 2 0 00-2-2z" />
+        </svg>
+    </button>
+    <div id="chatbot-window">
+        <div class="header">
+            <h3>Chat with Us!</h3>
+            <button id="chatbot-close">&times;</button>
+        </div>
+        <div class="messages" id="chatbot-messages">
+            <div>Hi! How can I assist you today?</div>
+        </div>
+        <div class="input">
+            <input id="chatbot-input" type="text" placeholder="Type your message...">
+        </div>
+    </div>
+</div>
+
+    <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Plan selection
+    let selectedPlan = null;
+    let selectedPrice = 0;
+    document.querySelectorAll('.select-plan-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            selectedPlan = e.target.dataset.plan;
+            selectedPrice = parseFloat(e.target.dataset.price);
+            showPaymentSection();
+        });
+    });
+
+    function showPaymentSection() {
+        const plansSection = document.getElementById('subscription-plans');
+        const paymentSection = document.getElementById('payment-section');
+        const planName = "Daily Premium Access";
+        const gst = 0;
+        const total = 0;
+        document.getElementById('selected-plan-name').textContent = planName;
+        document.getElementById('selected-plan-price').textContent = `₹0`;
+        document.getElementById('gst-amount').textContent = `₹0`;
+        document.getElementById('total-amount').textContent = `₹0`;
+        document.getElementById('pay-amount').textContent = `₹0`;
+        gsap.to(plansSection, { opacity: 0, y: -20, duration: 0.3, onComplete: () => {
+            plansSection.style.display = 'none';
+            paymentSection.classList.remove('hidden');
+            gsap.fromTo(paymentSection, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+        }});
+    }
+
+    // Payment button (UI only, no backend)
+    document.getElementById('pay-now-btn').addEventListener('click', () => {
+        // Simulate payment success (no backend)
+        showSuccessModal();
+        createConfetti();
+    });
+
+    // When user clicks "Pay Now"
+    document.getElementById('pay-now-btn').addEventListener('click', function() {
+        // Premium unlock for 6 hours, can be reactivated after 12 hours
+        const now = new Date();
+        const expiry = new Date(now.getTime() + 6 * 60 * 60 * 1000); // 6 hours from now
+        const cooldown = new Date(now.getTime() + 12 * 60 * 60 * 1000); // 12 hours from now
+        localStorage.setItem('premiumActive', 'true');
+        localStorage.setItem('premiumExpiry', expiry.toISOString());
+        localStorage.setItem('premiumCooldown', cooldown.toISOString());
+
+        // Show success modal, confetti, etc.
+        showSuccessModal();
+        createConfetti();
+    });
+
+    // On page load, check if premium expired
+    window.addEventListener('DOMContentLoaded', function() {
+        checkPremiumValidity();
+    });
+
+    function checkPremiumValidity() {
+        const expiry = localStorage.getItem('premiumExpiry');
+        const cooldown = localStorage.getItem('premiumCooldown');
+        const now = new Date();
+        if (expiry) {
+            const expiryDate = new Date(expiry);
+            if (now > expiryDate) {
+                localStorage.removeItem('premiumActive');
+                localStorage.removeItem('premiumExpiry');
+            }
+        }
+        // Optionally, you can disable the pay button if within cooldown
+        if (cooldown) {
+            const cooldownDate = new Date(cooldown);
+            if (now < cooldownDate && !localStorage.getItem('premiumActive')) {
+                document.getElementById('pay-now-btn').disabled = true;
+                document.getElementById('pay-now-btn').innerText = 'Premium can be reactivated after cooldown';
+            } else {
+                document.getElementById('pay-now-btn').disabled = false;
+                document.getElementById('pay-now-btn').innerHTML = 'Pay Now - <span id="pay-amount">₹0</span>';
+            }
+        }
+    }
+
+    function showSuccessModal() {
+        const modal = document.getElementById('success-modal');
+        modal.classList.remove('hidden');
+        gsap.fromTo('.success-animation', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" });
+    }
+
+    function createConfetti() {
+        const colors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(confetti);
+            setTimeout(() => { confetti.remove(); }, 5000);
+        }
+    }
+
+    // Back to plans
+    document.getElementById('back-to-plans').addEventListener('click', () => {
+        const plansSection = document.getElementById('subscription-plans');
+        const paymentSection = document.getElementById('payment-section');
+        gsap.to(paymentSection, {
+            opacity: 0, y: 20, duration: 0.3, onComplete: () => {
+                paymentSection.classList.add('hidden');
+                plansSection.style.display = 'grid';
+                gsap.fromTo(plansSection, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5 });
+            }
+        });
+    });
+
+    // Continue to dashboard
+    document.getElementById('continue-btn').addEventListener('click', () => {
+        window.location.href = 'home_dashboard.html';
+    });
+
+    // GSAP animations on load
+    gsap.fromTo('.plan-card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.2, ease: "power2.out" });
+
+    // Hover animations for plan cards
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            gsap.to(card, { scale: 1.02, duration: 0.3, ease: "power2.out" });
+        });
+        card.addEventListener('mouseleave', () => {
+            gsap.to(card, { scale: 1, duration: 0.3, ease: "power2.out" });
+        });
+    });
+</script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
